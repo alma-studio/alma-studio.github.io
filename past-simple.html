@@ -400,8 +400,8 @@ function say(text,btn){
   if(!('speechSynthesis' in window)){alert('Browserul tău nu suportă redarea audio. Încearcă Chrome sau Edge.');return;}
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
-  u.lang='en-GB';
-  const v=voices.find(v=>v.lang==='en-GB')||voices.find(v=>v.lang&&v.lang.startsWith('en'));
+  u.lang='en-US';
+  const v=voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang&&v.lang.startsWith('en'));
   if(v)u.voice=v;
   u.rate=0.9;
   if(btn){btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing');u.onerror=()=>btn.classList.remove('playing');}

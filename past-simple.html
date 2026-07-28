@@ -182,6 +182,7 @@
         <li>Verbele regulate și pronunția terminației <em>-ed</em></li>
         <li>35 de verbe neregulate folosite în business</li>
         <li>Exerciții interactive cu verificare pe loc</li>
+        <li>Drill zone: flashcards, audio și dictare</li>
         <li>Întrebări și negații cu <em>did</em></li>
         <li>Exerciții ghidate de vorbire</li>
         <li>Mini-test final cu scor</li>
@@ -310,9 +311,47 @@
   <p class="score" id="transscore"></p>
 </section>
 
-<!-- ============ PAGE 8 · GUIDED SPEAKING ============ -->
+<!-- ============ PAGE 8 · DRILL ZONE ============ -->
+<section class="page" id="p8drill">
+  <p class="eyebrow">Pagina 8 · Drill zone</p>
+  <h2>Exersare rapidă</h2>
+  <p>Aici fixezi formele prin repetare. Fă un drill pe zi, 5 minute — ritmul contează mai mult decât durata.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">⚡ 1. Flashcards rapid-fire</h3>
+    <p style="font-size:.93rem;color:var(--muted)">Vezi verbul la forma de bază, scrii forma de trecut, apeși Enter. La final poți repeta doar greșelile.</p>
+    <div id="fcArea">
+      <button class="btn" onclick="fcStart()">Începe drill-ul</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">🎧 2. Listen &amp; repeat</h3>
+    <p style="font-size:.93rem;color:var(--muted)">Apasă Start: auzi perechea <em>base — past</em>, apoi ai o pauză ca să repeți cu voce tare. Merge singur prin toată lista.</p>
+    <div id="lrWord" style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--teal-deep);min-height:1.6em;margin:8px 0"></div>
+    <button class="btn" id="lrBtn" onclick="lrToggle()">▶ Start</button>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">✍️ 3. Scrie ce auzi</h3>
+    <p style="font-size:.93rem;color:var(--muted)">Auzi o formă de trecut și o scrii corect. 10 verbe alese la întâmplare — antrenezi urechea și ortografia deodată.</p>
+    <div id="dictArea">
+      <button class="btn" onclick="dictStart()">Începe dictarea</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">❓ 4. Drill de întrebări</h3>
+    <p style="font-size:.93rem;color:var(--muted)">Transformă propoziția afirmativă în întrebare cu <em>Did</em>. Scrie întrebarea completă.</p>
+    <div id="qdArea">
+      <button class="btn" onclick="qdStart()">Începe drill-ul</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 9 · GUIDED SPEAKING ============ -->
 <section class="page" id="p8">
-  <p class="eyebrow">Pagina 8 · Vorbire ghidată</p>
+  <p class="eyebrow">Pagina 9 · Vorbire ghidată</p>
   <h2>Acum povestește tu</h2>
   <p>Gramatica se fixează vorbind. Alege un subiect, apasă 🔊 ca să auzi un model, apoi răspunde <strong>cu voce tare</strong>, 30–60 de secunde. Nu căuta perfecțiunea — caută fluența.</p>
 
@@ -345,7 +384,7 @@
 
 <!-- ============ PAGE 9 · FINAL QUIZ ============ -->
 <section class="page" id="p9">
-  <p class="eyebrow">Pagina 9 · Mini-testul final</p>
+  <p class="eyebrow">Pagina 10 · Mini-testul final</p>
   <h2>10 întrebări, fără presiune</h2>
   <p>Alege varianta corectă. Primești răspunsul imediat, iar la final vezi scorul.</p>
   <div id="finalquiz"></div>
@@ -355,7 +394,7 @@
 
 <!-- ============ PAGE 10 · RECAP + CTA ============ -->
 <section class="page" id="p10">
-  <p class="eyebrow">Pagina 10 · Recapitulare</p>
+  <p class="eyebrow">Pagina 11 · Recapitulare</p>
   <h2>Ce iei cu tine</h2>
   <div class="card">
     <ul class="plain">
@@ -413,7 +452,7 @@ document.addEventListener('click',e=>{
 });
 
 /* ---------- Page navigation ---------- */
-const PAGES=10;let cur=1;
+const PAGES=11;let cur=1;
 const dotsEl=document.getElementById('dots');
 for(let i=1;i<=PAGES;i++){
   const d=document.createElement('button');
@@ -429,6 +468,7 @@ function show(n){
   document.getElementById('nextBtn').style.visibility=cur===PAGES?'hidden':'visible';
   window.scrollTo({top:0});
   speechSynthesis.cancel();
+  if(typeof lrActive!=='undefined'&&lrActive){lrActive=false;lrSession++;const b=document.getElementById('lrBtn');if(b)b.textContent='▶ Start';const w=document.getElementById('lrWord');if(w)w.textContent='';}
 }
 function go(d){show(cur+d);}
 show(1);
@@ -609,7 +649,169 @@ function finalAnswer(btn,i,j){
     document.getElementById('finalreset').style.display='inline-block';
   }
 }
+/* ---------- Page 8: Drill zone ---------- */
 function resetFinal(){buildFinal();}
+const DRILLPOOL=VERBS.filter(v=>v[0]!=='be');
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function speakAsync(text){
+  return new Promise(res=>{
+    if(!('speechSynthesis' in window)){res();return;}
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';
+    const v=voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang&&v.lang.startsWith('en'));
+    if(v)u.voice=v;
+    u.rate=0.7;u.onend=res;u.onerror=res;
+    speechSynthesis.speak(u);
+  });
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* --- 1. Flashcards rapid-fire --- */
+let fcPool=[],fcIdx=0,fcWrong=[];
+function fcStart(pool){
+  fcPool=shuffle([...(pool||DRILLPOOL)]);fcIdx=0;fcWrong=[];
+  fcRender();
+}
+function fcRender(){
+  const area=document.getElementById('fcArea');
+  if(fcIdx>=fcPool.length){
+    const ok=fcPool.length-fcWrong.length;
+    area.innerHTML=`<p class="score" style="display:block">Scor: ${ok} din ${fcPool.length}</p>`+
+      (fcWrong.length?`<p class="hintword">De repetat: ${fcWrong.map(v=>v[0]+' — '+v[1]).join(', ')}</p>
+      <button class="btn" onclick='fcStart(${JSON.stringify(fcWrong)})'>Repetă doar greșelile</button>`:
+      `<p>Toate corecte — bravo! 🎉</p>`)+
+      `<button class="btn ghost" onclick="fcStart()">De la capăt</button>`;
+    return;
+  }
+  const v=fcPool[fcIdx];
+  area.innerHTML=`
+    <p class="hintword">${fcIdx+1} / ${fcPool.length}</p>
+    <p style="font-family:'Fraunces',serif;font-size:1.7rem;color:var(--teal-deep);margin:6px 0">${v[0]}</p>
+    <p class="hintword" style="margin-bottom:8px">${v[2]}</p>
+    <input type="text" id="fcInput" autocapitalize="off" autocomplete="off" placeholder="forma de trecut"
+      style="font-family:'Source Sans 3',sans-serif;font-size:1.1rem;border:none;border-bottom:2px solid var(--teal);background:transparent;padding:4px 8px;width:180px;color:var(--ink)">
+    <button class="btn" onclick="fcCheck()">Verifică</button>
+    <p class="fb" id="fcFb" style="display:block;min-height:1.3em"></p>`;
+  const inp=document.getElementById('fcInput');
+  inp.focus();
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')fcCheck();});
+}
+let fcLock=false;
+function fcCheck(){
+  if(fcLock)return;
+  const v=fcPool[fcIdx];
+  const val=norm(document.getElementById('fcInput').value);
+  const fb=document.getElementById('fcFb');
+  fcLock=true;
+  if(val===norm(v[1])){fb.style.color='var(--ok)';fb.textContent='✔ Corect!';}
+  else{fb.style.color='var(--err)';fb.textContent='✘ Corect era: '+v[1];fcWrong.push(v);}
+  say(v[1]);
+  setTimeout(()=>{fcLock=false;fcIdx++;fcRender();},1400);
+}
+
+/* --- 2. Listen & repeat --- */
+let lrActive=false,lrSession=0;
+async function lrToggle(){
+  const btn=document.getElementById('lrBtn');
+  if(lrActive){lrActive=false;speechSynthesis.cancel();btn.textContent='▶ Start';document.getElementById('lrWord').textContent='';return;}
+  lrActive=true;btn.textContent='⏸ Oprește';
+  const session=++lrSession;
+  const list=shuffle([...DRILLPOOL]);
+  for(const v of list){
+    if(!lrActive||session!==lrSession)return;
+    document.getElementById('lrWord').textContent=v[0]+' — '+v[1];
+    await speakAsync(v[0]);
+    await sleep(500);
+    if(!lrActive||session!==lrSession)return;
+    await speakAsync(v[1]);
+    await sleep(2200); /* pauză ca să repeți */
+  }
+  if(lrActive&&session===lrSession){
+    lrActive=false;btn.textContent='▶ Start';
+    document.getElementById('lrWord').textContent='Gata toată lista! 🎉';
+  }
+}
+
+/* --- 3. Dictation drill --- */
+let dictList=[],dictIdx=0,dictOk=0;
+function dictStart(){
+  dictList=shuffle([...DRILLPOOL]).slice(0,10);dictIdx=0;dictOk=0;
+  dictRender();
+}
+function dictRender(){
+  const area=document.getElementById('dictArea');
+  if(dictIdx>=dictList.length){
+    area.innerHTML=`<p class="score" style="display:block">Scor: ${dictOk} din ${dictList.length}</p>
+      <button class="btn ghost" onclick="dictStart()">Încă 10 verbe</button>`;
+    return;
+  }
+  area.innerHTML=`
+    <p class="hintword">${dictIdx+1} / ${dictList.length}</p>
+    <button class="chip" onclick="say(dictList[dictIdx][1],this)">🔊 Ascultă</button>
+    <input type="text" id="dictInput" autocapitalize="off" autocomplete="off" placeholder="scrie ce auzi"
+      style="font-family:'Source Sans 3',sans-serif;font-size:1.1rem;border:none;border-bottom:2px solid var(--teal);background:transparent;padding:4px 8px;width:180px;color:var(--ink)">
+    <button class="btn" onclick="dictCheck()">Verifică</button>
+    <p class="fb" id="dictFb" style="display:block;min-height:1.3em"></p>`;
+  document.getElementById('dictInput').addEventListener('keydown',e=>{if(e.key==='Enter')dictCheck();});
+  say(dictList[dictIdx][1]);
+}
+let dictLock=false;
+function dictCheck(){
+  if(dictLock)return;
+  const v=dictList[dictIdx];
+  const val=norm(document.getElementById('dictInput').value);
+  const fb=document.getElementById('dictFb');
+  dictLock=true;
+  if(val===norm(v[1])){fb.style.color='var(--ok)';fb.textContent='✔ Corect! ('+v[0]+' — '+v[1]+')';dictOk++;}
+  else{fb.style.color='var(--err)';fb.textContent='✘ Era: '+v[1]+' ('+v[0]+')';}
+  setTimeout(()=>{dictLock=false;dictIdx++;dictRender();},1600);
+}
+
+/* --- 4. Question drill --- */
+const QD=[
+ ["You called the client.","Did you call the client?"],
+ ["She sent the invoice.","Did she send the invoice?"],
+ ["They signed the contract.","Did they sign the contract?"],
+ ["He went to the conference.","Did he go to the conference?"],
+ ["You finished the report.","Did you finish the report?"],
+ ["We paid the supplier.","Did we pay the supplier?"],
+ ["She spoke with the manager.","Did she speak with the manager?"],
+ ["They bought new laptops.","Did they buy new laptops?"],
+ ["You met the new colleague.","Did you meet the new colleague?"],
+ ["He wrote the email.","Did he write the email?"]
+];
+function qnorm(s){return s.toLowerCase().replace(/[.?!,'’]/g,'').replace(/\s+/g,' ').trim();}
+let qdList=[],qdIdx=0,qdOk=0;
+function qdStart(){qdList=shuffle([...QD]);qdIdx=0;qdOk=0;qdRender();}
+function qdRender(){
+  const area=document.getElementById('qdArea');
+  if(qdIdx>=qdList.length){
+    area.innerHTML=`<p class="score" style="display:block">Scor: ${qdOk} din ${qdList.length}</p>
+      <button class="btn ghost" onclick="qdStart()">De la capăt</button>`;
+    return;
+  }
+  const q=qdList[qdIdx];
+  area.innerHTML=`
+    <p class="hintword">${qdIdx+1} / ${qdList.length}</p>
+    <p style="font-weight:700;margin:6px 0">${q[0]}</p>
+    <input type="text" id="qdInput" autocapitalize="off" autocomplete="off" placeholder="Did ...?"
+      style="font-family:'Source Sans 3',sans-serif;font-size:1.05rem;border:none;border-bottom:2px solid var(--teal);background:transparent;padding:4px 8px;width:100%;max-width:420px;color:var(--ink)">
+    <button class="btn" onclick="qdCheck()">Verifică</button>
+    <p class="fb" id="qdFb" style="display:block;min-height:1.3em"></p>`;
+  document.getElementById('qdInput').addEventListener('keydown',e=>{if(e.key==='Enter')qdCheck();});
+}
+let qdLock=false;
+function qdCheck(){
+  if(qdLock)return;
+  const q=qdList[qdIdx];
+  const val=qnorm(document.getElementById('qdInput').value);
+  const fb=document.getElementById('qdFb');
+  qdLock=true;
+  if(val===qnorm(q[1])){fb.style.color='var(--ok)';fb.textContent='✔ Corect!';qdOk++;}
+  else{fb.style.color='var(--err)';fb.textContent='✘ Corect era: '+q[1];}
+  say(q[1]);
+  setTimeout(()=>{qdLock=false;qdIdx++;qdRender();},1800);
+}
 </script>
 </body>
 </html>

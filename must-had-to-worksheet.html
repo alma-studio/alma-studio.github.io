@@ -406,8 +406,8 @@ ex5.forEach((sent,i)=>{
   const div=document.createElement('div');
   div.className='item shadow-item';
   div.innerHTML=`<p class="sent"><span class="num">${i+1}.</span>${sent}</p>
-  <button class="play" onclick="speak('${sent.replace(/'/g,"\\'")}',0.9)">🔊 Ascultă</button>
-  <button class="play slow" onclick="speak('${sent.replace(/'/g,"\\'")}',0.65)">🐢 Ascultă lent</button>
+  <button class="play" onclick="speak('${sent.replace(/'/g,"\\'")}',1)">🔊 Ascultă</button>
+  <button class="play slow" onclick="speak('${sent.replace(/'/g,"\\'")}',0.5)">🐢 Ascultă lent</button>
   <label class="done-cb"><input type="checkbox"> Am exersat</label>`;
   document.getElementById('ex5items').appendChild(div);
 });
@@ -423,11 +423,15 @@ if('speechSynthesis' in window){
 function speak(text,rate){
   if(!('speechSynthesis' in window)){alert('Browserul tău nu suportă redarea audio. Încearcă Chrome sau Edge.');return;}
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='en-US';
-  if(enVoice)u.voice=enVoice;
-  u.rate=rate;
-  speechSynthesis.speak(u);
+  /* mic delay după cancel() – altfel Chrome ignoră uneori viteza setată */
+  setTimeout(()=>{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';
+    if(enVoice)u.voice=enVoice;
+    u.rate=rate;
+    u.pitch=1;
+    speechSynthesis.speak(u);
+  },80);
 }
 </script>
 </body>

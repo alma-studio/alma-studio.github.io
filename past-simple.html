@@ -403,7 +403,7 @@ function say(text,btn){
   u.lang='en-US';
   const v=voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang&&v.lang.startsWith('en'));
   if(v)u.voice=v;
-  u.rate=0.9;
+  u.rate=text.trim().split(/\s+/).length<=4?0.7:0.85;
   if(btn){btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing');u.onerror=()=>btn.classList.remove('playing');}
   speechSynthesis.speak(u);
 }

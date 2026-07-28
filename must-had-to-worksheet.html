@@ -413,8 +413,14 @@ ex5.forEach((sent,i)=>{
 });
 let enVoice=null;
 function loadVoice(){
-  const vs=speechSynthesis.getVoices();
-  enVoice=vs.find(v=>v.lang==='en-US')||vs.find(v=>v.lang.startsWith('en'))||null;
+  const vs=speechSynthesis.getVoices().filter(v=>v.lang.startsWith('en-US')||v.lang.startsWith('en_US'));
+  /* preferăm vocile de calitate înaltă, în ordine */
+  enVoice =
+    vs.find(v=>/natural/i.test(v.name)) ||               /* Edge: voci neurale, foarte naturale */
+    vs.find(v=>/Google US English/i.test(v.name)) ||     /* Chrome desktop */
+    vs.find(v=>/Samantha|Ava|Allison/i.test(v.name)) ||  /* Safari/macOS/iOS */
+    vs[0] ||
+    speechSynthesis.getVoices().find(v=>v.lang.startsWith('en')) || null;
 }
 if('speechSynthesis' in window){
   loadVoice();

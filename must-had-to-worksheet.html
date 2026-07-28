@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Must sau Had to? · Alma English Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16324F;
+    --cream:#FFF4E6;
+    --orange:#FF7A3D;
+    --yellow:#FFC53D;
+    --green:#2E8B57;
+    --red:#C0392B;
+    --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Source Sans 3',sans-serif;
+    background:var(--cream);
+    color:var(--navy);
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+  header{
+    background:var(--navy);
+    color:var(--cream);
+    padding:34px 20px 30px;
+    text-align:center;
+  }
+  header h1{
+    font-family:'Fraunces',serif;
+    font-size:clamp(1.7rem,4.5vw,2.4rem);
+    font-weight:700;
+  }
+  header p{margin-top:8px;font-size:1.05rem;opacity:.9;}
+  .badge{
+    display:inline-block;
+    background:var(--yellow);
+    color:var(--navy);
+    font-weight:700;
+    font-size:.8rem;
+    letter-spacing:.05em;
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+    text-transform:uppercase;
+  }
+  main{max-width:760px;margin:0 auto;padding:0 18px;}
+  .reminder{
+    background:var(--white);
+    border-left:6px solid var(--yellow);
+    border-radius:12px;
+    padding:20px 22px;
+    margin:26px 0 10px;
+    box-shadow:0 2px 10px rgba(22,50,79,.08);
+  }
+  .reminder h2{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:10px;}
+  .reminder p{margin:6px 0;}
+  .reminder strong{color:var(--orange);}
+  .reminder .en{font-style:italic;}
+  section.ex{
+    background:var(--white);
+    border-radius:14px;
+    padding:24px 22px;
+    margin:26px 0;
+    box-shadow:0 2px 10px rgba(22,50,79,.08);
+  }
+  .ex-label{
+    display:inline-block;
+    background:var(--orange);
+    color:var(--white);
+    font-weight:700;
+    font-size:.85rem;
+    padding:3px 12px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  section.ex h2{font-family:'Fraunces',serif;font-size:1.35rem;margin-bottom:6px;}
+  .instr{margin-bottom:18px;color:#3d556e;}
+  .item{margin:14px 0;padding:12px 14px;border:1.5px solid #e5d9c8;border-radius:10px;}
+  .item .q{margin-bottom:8px;font-size:1.05rem;}
+  .num{font-weight:700;color:var(--orange);margin-right:6px;}
+  .choices button, .pairs button{
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:600;
+    padding:8px 18px;
+    margin:4px 8px 4px 0;
+    border:2px solid var(--navy);
+    border-radius:999px;
+    background:var(--white);
+    color:var(--navy);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .choices button:hover, .pairs button:hover{background:var(--cream);}
+  .choices button.sel, .pairs button.sel{background:var(--navy);color:var(--white);}
+  .item.ok{border-color:var(--green);background:#f0faf4;}
+  .item.bad{border-color:var(--red);background:#fdf1ef;}
+  .fb{font-size:.92rem;font-weight:600;margin-top:6px;display:none;}
+  .item.ok .fb{display:block;color:var(--green);}
+  .item.bad .fb{display:block;color:var(--red);}
+  input.gap{
+    font-family:inherit;
+    font-size:1rem;
+    padding:6px 10px;
+    border:2px solid var(--navy);
+    border-radius:8px;
+    width:110px;
+    text-align:center;
+  }
+  input.gap:focus{outline:2px solid var(--orange);}
+  .pairs button{display:block;width:100%;text-align:left;border-radius:10px;margin:6px 0;}
+  .chips{margin:8px 0;}
+  .chips button{
+    font-family:inherit;font-size:1rem;font-weight:600;
+    padding:7px 14px;margin:4px 6px 4px 0;
+    border:2px dashed var(--orange);border-radius:8px;
+    background:var(--white);color:var(--navy);cursor:pointer;
+  }
+  .chips button:disabled{opacity:.25;cursor:default;}
+  .built{
+    min-height:44px;background:var(--cream);border-radius:8px;
+    padding:8px 12px;margin:8px 0;font-size:1.05rem;font-weight:600;
+  }
+  .mini{
+    font-family:inherit;font-size:.85rem;font-weight:600;
+    padding:5px 12px;border:none;border-radius:999px;
+    background:#e5d9c8;color:var(--navy);cursor:pointer;margin-right:6px;
+  }
+  .check{
+    display:block;
+    font-family:inherit;font-size:1.05rem;font-weight:700;
+    background:var(--orange);color:var(--white);
+    border:none;border-radius:999px;
+    padding:11px 30px;margin:18px auto 0;cursor:pointer;
+    transition:transform .1s;
+  }
+  .check:hover{transform:scale(1.03);}
+  .score{text-align:center;font-weight:700;margin-top:12px;font-size:1.05rem;display:none;}
+  /* shadowing */
+  .steps{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .step{
+    flex:1;min-width:150px;background:var(--cream);border-radius:10px;
+    padding:12px;text-align:center;font-weight:600;font-size:.95rem;
+  }
+  .step span{display:block;font-size:1.5rem;margin-bottom:4px;}
+  .shadow-item{display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+  .shadow-item .sent{flex:1 1 100%;font-size:1.1rem;font-weight:600;margin-bottom:4px;}
+  .play{
+    font-family:inherit;font-size:.92rem;font-weight:700;
+    background:var(--navy);color:var(--white);
+    border:none;border-radius:999px;padding:8px 16px;cursor:pointer;
+  }
+  .play.slow{background:var(--yellow);color:var(--navy);}
+  .done-cb{display:flex;align-items:center;gap:6px;font-size:.92rem;font-weight:600;margin-left:auto;}
+  .done-cb input{width:18px;height:18px;accent-color:var(--orange);}
+  footer{text-align:center;margin-top:40px;font-size:.9rem;color:#3d556e;}
+  footer strong{font-family:'Fraunces',serif;color:var(--navy);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Business English · A2</div>
+  <h1>Must sau Had to?</h1>
+  <p>Fișă de lucru interactivă · obligații la birou, azi și ieri</p>
+</header>
+
+<main>
+
+  <div class="reminder">
+    <h2>💡 Reține</h2>
+    <p><strong>must</strong> = obligație <u>acum sau în viitor</u> → <span class="en">I <strong>must</strong> finish the report today.</span></p>
+    <p><strong>had to</strong> = obligație <u>în trecut</u> → <span class="en">Yesterday I <strong>had to</strong> work late.</span></p>
+    <p>Semnale pentru trecut: <em>yesterday, last week, on Monday, two days ago…</em></p>
+  </div>
+
+  <!-- EX 1 -->
+  <section class="ex" id="ex1">
+    <span class="ex-label">Exercițiul 1</span>
+    <h2>Alege varianta corectă</h2>
+    <p class="instr">Apasă pe <strong>must</strong> sau <strong>had to</strong>.</p>
+    <div id="ex1items"></div>
+    <button class="check" onclick="checkEx1()">Verifică ✔</button>
+    <p class="score" id="score1"></p>
+  </section>
+
+  <!-- EX 2 -->
+  <section class="ex" id="ex2">
+    <span class="ex-label">Exercițiul 2</span>
+    <h2>Completează propoziția</h2>
+    <p class="instr">Scrie <strong>must</strong> sau <strong>had to</strong> în spațiul liber.</p>
+    <div id="ex2items"></div>
+    <button class="check" onclick="checkEx2()">Verifică ✔</button>
+    <p class="score" id="score2"></p>
+  </section>
+
+  <!-- EX 3 -->
+  <section class="ex" id="ex3">
+    <span class="ex-label">Exercițiul 3</span>
+    <h2>Care propoziție este corectă?</h2>
+    <p class="instr">Apasă pe propoziția corectă (a sau b).</p>
+    <div id="ex3items"></div>
+    <button class="check" onclick="checkEx3()">Verifică ✔</button>
+    <p class="score" id="score3"></p>
+  </section>
+
+  <!-- EX 4 -->
+  <section class="ex" id="ex4">
+    <span class="ex-label">Exercițiul 4</span>
+    <h2>Pune cuvintele în ordine</h2>
+    <p class="instr">Apasă pe cuvinte, în ordine, pentru a construi propoziția.</p>
+    <div id="ex4items"></div>
+    <button class="check" onclick="checkEx4()">Verifică ✔</button>
+    <p class="score" id="score4"></p>
+  </section>
+
+  <!-- EX 5 -->
+  <section class="ex" id="ex5">
+    <span class="ex-label">Exercițiul 5</span>
+    <h2>Pronunție · Shadowing 🗣</h2>
+    <p class="instr">Urmează pașii pentru fiecare propoziție. Repetă de 2–3 ori, imitând intonația.</p>
+    <div class="steps">
+      <div class="step"><span>👀</span>1. Citește în gând</div>
+      <div class="step"><span>🔊</span>2. Ascultă</div>
+      <div class="step"><span>🗣</span>3. Citește cu voce tare</div>
+    </div>
+    <div id="ex5items"></div>
+    <p class="instr" style="margin-top:14px;font-size:.9rem;">💡 <em>Sfat: folosește „Ascultă lent" prima dată, apoi viteza normală.</em></p>
+  </section>
+
+  <footer>
+    <p><strong>Alma English Studio</strong> · Engleza de care ai nevoie</p>
+  </footer>
+
+</main>
+
+<script>
+/* ---------- DATA ---------- */
+const ex1 = [
+  {q:"I ___ finish this report today.", a:"must"},
+  {q:"Yesterday, Anna ___ stay late at the office.", a:"had to"},
+  {q:"We ___ send the invoice before Friday.", a:"must"},
+  {q:"Last week, I ___ change my meeting with the client.", a:"had to"},
+  {q:"You ___ answer this email now.", a:"must"},
+  {q:"On Monday, Dan ___ go to the bank for the company.", a:"had to"}
+];
+const ex2 = [
+  {pre:"Sorry I was late. I ", post:" take an important call.", a:"had to"},
+  {pre:"It's urgent — I ", post:" speak to my manager today.", a:"must"},
+  {pre:"Last month, we ", post:" prepare a big presentation.", a:"had to"},
+  {pre:"You ", post:" be on time for the meeting tomorrow.", a:"must"},
+  {pre:"Two days ago, she ", post:" write the report again.", a:"had to"}
+];
+const ex3 = [
+  {a:"Yesterday I must work late.", b:"Yesterday I had to work late.", correct:"b"},
+  {a:"I must call the client now.", b:"I had to call the client now.", correct:"a"},
+  {a:"Last week we must change the plan.", b:"Last week we had to change the plan.", correct:"b"},
+  {a:"You must send the report today.", b:"You had to send the report today.", correct:"a"}
+];
+const ex4 = [
+  {words:["I","had to","answer","many emails","yesterday."], answer:"I had to answer many emails yesterday."},
+  {words:["We","must","finish","the project","this week."], answer:"We must finish the project this week."},
+  {words:["She","had to","go","to a meeting","last Friday."], answer:"She had to go to a meeting last Friday."},
+  {words:["You","must","check","the invoice","today."], answer:"You must check the invoice today."}
+];
+const ex5 = [
+  "I must finish the report today.",
+  "Yesterday I had to work late.",
+  "We must call the client this afternoon.",
+  "Last week I had to travel for work.",
+  "You must send the email before the meeting."
+];
+
+/* ---------- EX 1 ---------- */
+const ex1sel = {};
+ex1.forEach((it,i)=>{
+  const div=document.createElement('div');
+  div.className='item';div.id='e1i'+i;
+  div.innerHTML=`<p class="q"><span class="num">${i+1}.</span>${it.q.replace('___','<strong>______</strong>')}</p>
+  <div class="choices">
+    <button onclick="pick1(${i},'must',this)">must</button>
+    <button onclick="pick1(${i},'had to',this)">had to</button>
+  </div><p class="fb"></p>`;
+  document.getElementById('ex1items').appendChild(div);
+});
+function pick1(i,val,btn){
+  ex1sel[i]=val;
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function checkEx1(){
+  let ok=0;
+  ex1.forEach((it,i)=>{
+    const div=document.getElementById('e1i'+i);
+    div.classList.remove('ok','bad');
+    const fb=div.querySelector('.fb');
+    if(ex1sel[i]===it.a){div.classList.add('ok');fb.textContent='✔ Corect!';ok++;}
+    else{div.classList.add('bad');fb.textContent='✘ Răspuns corect: '+it.a;}
+  });
+  const s=document.getElementById('score1');
+  s.style.display='block';s.textContent=`Rezultat: ${ok} / ${ex1.length}`;
+}
+
+/* ---------- EX 2 ---------- */
+ex2.forEach((it,i)=>{
+  const div=document.createElement('div');
+  div.className='item';div.id='e2i'+i;
+  div.innerHTML=`<p class="q"><span class="num">${i+1}.</span>${it.pre}<input class="gap" id="g2${i}" autocomplete="off">${it.post}</p><p class="fb"></p>`;
+  document.getElementById('ex2items').appendChild(div);
+});
+function checkEx2(){
+  let ok=0;
+  ex2.forEach((it,i)=>{
+    const div=document.getElementById('e2i'+i);
+    div.classList.remove('ok','bad');
+    const fb=div.querySelector('.fb');
+    const val=document.getElementById('g2'+i).value.trim().toLowerCase();
+    if(val===it.a){div.classList.add('ok');fb.textContent='✔ Corect!';ok++;}
+    else{div.classList.add('bad');fb.textContent='✘ Răspuns corect: '+it.a;}
+  });
+  const s=document.getElementById('score2');
+  s.style.display='block';s.textContent=`Rezultat: ${ok} / ${ex2.length}`;
+}
+
+/* ---------- EX 3 ---------- */
+const ex3sel={};
+ex3.forEach((it,i)=>{
+  const div=document.createElement('div');
+  div.className='item';div.id='e3i'+i;
+  div.innerHTML=`<p class="q"><span class="num">${i+1}.</span></p>
+  <div class="pairs">
+    <button onclick="pick3(${i},'a',this)">a) ${it.a}</button>
+    <button onclick="pick3(${i},'b',this)">b) ${it.b}</button>
+  </div><p class="fb"></p>`;
+  document.getElementById('ex3items').appendChild(div);
+});
+function pick3(i,val,btn){
+  ex3sel[i]=val;
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function checkEx3(){
+  let ok=0;
+  ex3.forEach((it,i)=>{
+    const div=document.getElementById('e3i'+i);
+    div.classList.remove('ok','bad');
+    const fb=div.querySelector('.fb');
+    if(ex3sel[i]===it.correct){div.classList.add('ok');fb.textContent='✔ Corect!';ok++;}
+    else{div.classList.add('bad');fb.textContent='✘ Varianta corectă: '+it.correct+')';}
+  });
+  const s=document.getElementById('score3');
+  s.style.display='block';s.textContent=`Rezultat: ${ok} / ${ex3.length}`;
+}
+
+/* ---------- EX 4 ---------- */
+const built=ex4.map(()=>[]);
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+ex4.forEach((it,i)=>{
+  const div=document.createElement('div');
+  div.className='item';div.id='e4i'+i;
+  const chips=shuffle(it.words).map((w,k)=>`<button id="c${i}_${k}" onclick="addWord(${i},${k},'${w.replace(/'/g,"\\'")}')">${w}</button>`).join('');
+  div.innerHTML=`<p class="q"><span class="num">${i+1}.</span></p>
+  <div class="chips">${chips}</div>
+  <div class="built" id="b4${i}"></div>
+  <button class="mini" onclick="resetWord(${i})">↺ Reia</button>
+  <p class="fb"></p>`;
+  document.getElementById('ex4items').appendChild(div);
+});
+function addWord(i,k,w){
+  built[i].push(w);
+  document.getElementById('c'+i+'_'+k).disabled=true;
+  document.getElementById('b4'+i).textContent=built[i].join(' ');
+}
+function resetWord(i){
+  built[i]=[];
+  document.getElementById('b4'+i).textContent='';
+  document.querySelectorAll('#e4i'+i+' .chips button').forEach(b=>b.disabled=false);
+  document.getElementById('e4i'+i).classList.remove('ok','bad');
+}
+function checkEx4(){
+  let ok=0;
+  ex4.forEach((it,i)=>{
+    const div=document.getElementById('e4i'+i);
+    div.classList.remove('ok','bad');
+    const fb=div.querySelector('.fb');
+    if(built[i].join(' ')===it.answer){div.classList.add('ok');fb.textContent='✔ Corect!';ok++;}
+    else{div.classList.add('bad');fb.textContent='✘ Corect: '+it.answer;}
+  });
+  const s=document.getElementById('score4');
+  s.style.display='block';s.textContent=`Rezultat: ${ok} / ${ex4.length}`;
+}
+
+/* ---------- EX 5 (shadowing) ---------- */
+ex5.forEach((sent,i)=>{
+  const div=document.createElement('div');
+  div.className='item shadow-item';
+  div.innerHTML=`<p class="sent"><span class="num">${i+1}.</span>${sent}</p>
+  <button class="play" onclick="speak('${sent.replace(/'/g,"\\'")}',0.9)">🔊 Ascultă</button>
+  <button class="play slow" onclick="speak('${sent.replace(/'/g,"\\'")}',0.65)">🐢 Ascultă lent</button>
+  <label class="done-cb"><input type="checkbox"> Am exersat</label>`;
+  document.getElementById('ex5items').appendChild(div);
+});
+let enVoice=null;
+function loadVoice(){
+  const vs=speechSynthesis.getVoices();
+  enVoice=vs.find(v=>v.lang==='en-GB')||vs.find(v=>v.lang.startsWith('en'))||null;
+}
+if('speechSynthesis' in window){
+  loadVoice();
+  speechSynthesis.onvoiceschanged=loadVoice;
+}
+function speak(text,rate){
+  if(!('speechSynthesis' in window)){alert('Browserul tău nu suportă redarea audio. Încearcă Chrome sau Edge.');return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-GB';
+  if(enVoice)u.voice=enVoice;
+  u.rate=rate;
+  speechSynthesis.speak(u);
+}
+</script>
+</body>
+</html>

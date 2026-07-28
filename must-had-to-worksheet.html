@@ -414,7 +414,7 @@ ex5.forEach((sent,i)=>{
 let enVoice=null;
 function loadVoice(){
   const vs=speechSynthesis.getVoices();
-  enVoice=vs.find(v=>v.lang==='en-GB')||vs.find(v=>v.lang.startsWith('en'))||null;
+  enVoice=vs.find(v=>v.lang==='en-US')||vs.find(v=>v.lang.startsWith('en'))||null;
 }
 if('speechSynthesis' in window){
   loadVoice();
@@ -424,7 +424,7 @@ function speak(text,rate){
   if(!('speechSynthesis' in window)){alert('Browserul tău nu suportă redarea audio. Încearcă Chrome sau Edge.');return;}
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(text);
-  u.lang='en-GB';
+  u.lang='en-US';
   if(enVoice)u.voice=enVoice;
   u.rate=rate;
   speechSynthesis.speak(u);

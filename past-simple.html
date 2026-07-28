@@ -282,7 +282,7 @@
 <!-- ============ PAGE 6 · TIME EXPRESSIONS ============ -->
 <section class="page" id="p6">
   <p class="eyebrow">Pagina 6 · Expresii de timp</p>
-  <h2>Semnalele trecutului</h2>
+  <h2>Repere de timp</h2>
   <p>Aceste expresii îți spun că fraza cere Past Simple:</p>
   <div class="card">
     <button class="chip" data-say="yesterday">🔊 yesterday</button>
@@ -722,7 +722,7 @@ async function lrToggle(){
     if(!lrActive||session!==lrSession)return;
     document.getElementById('lrWord').textContent=v[0]+' — '+v[1];
     await speakAsync(v[0]);
-    await sleep(500);
+    await sleep(1400);
     if(!lrActive||session!==lrSession)return;
     await speakAsync(v[1]);
     await sleep(2200); /* pauză ca să repeți */

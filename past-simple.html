@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Past Simple pentru profesioniști · Alma English Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12403C;
+    --paper:#F4F8F6;
+    --card:#FFFFFF;
+    --teal:#1E7A74;
+    --teal-deep:#155E59;
+    --teal-soft:#DFEEEB;
+    --sand:#F0E9DC;
+    --amber:#D99A3D;
+    --ok:#2C8A5B;
+    --ok-soft:#E3F3EA;
+    --err:#C25B4E;
+    --err-soft:#F9E9E6;
+    --muted:#5C7370;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Source Sans 3',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    font-size:17px;
+    line-height:1.55;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:20px 16px 90px}
+  h1,h2,h3{font-family:'Fraunces',serif;line-height:1.2}
+  h2{font-size:1.6rem;margin-bottom:6px}
+  h3{font-size:1.15rem;margin:18px 0 8px}
+  p{margin-bottom:10px}
+  .eyebrow{
+    text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:700;
+    color:var(--teal);margin-bottom:8px;
+  }
+  .page{display:none;animation:fadein .35s ease}
+  .page.active{display:block}
+  @keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.page{animation:none}}
+
+  .card{
+    background:var(--card);border-radius:var(--radius);
+    padding:20px;margin:14px 0;
+    box-shadow:0 1px 3px rgba(18,64,60,.08);
+  }
+  .note{
+    background:var(--teal-soft);border-radius:var(--radius);
+    padding:14px 16px;margin:14px 0;font-size:.95rem;
+  }
+  .note strong{color:var(--teal-deep)}
+
+  /* ------- verb chips (signature element) ------- */
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    background:var(--card);border:1.5px solid var(--teal-soft);
+    border-radius:999px;padding:7px 14px;margin:4px 3px;
+    font-size:1rem;font-weight:600;color:var(--ink);
+    cursor:pointer;transition:border-color .15s, background .15s;
+    font-family:'Source Sans 3',sans-serif;
+  }
+  .chip:hover{border-color:var(--teal)}
+  .chip.playing{background:var(--teal-soft);border-color:var(--teal)}
+  .chip .spk{width:16px;height:16px;flex:none;color:var(--teal)}
+  .chip em{font-style:normal;color:var(--teal-deep)}
+
+  /* ------- verb table ------- */
+  .vtable{width:100%;border-collapse:collapse;font-size:.98rem}
+  .vtable td{padding:7px 6px;border-bottom:1px solid var(--teal-soft);vertical-align:middle}
+  .vtable td:last-child{color:var(--muted);font-size:.9rem}
+  .vtable .chip{margin:0;padding:5px 12px}
+
+  /* ------- exercises ------- */
+  .ex{margin:12px 0}
+  .ex-item{margin:12px 0;padding:12px 14px;border-radius:10px;background:var(--card);
+    border:1.5px solid var(--teal-soft)}
+  .ex-item.right{border-color:var(--ok);background:var(--ok-soft)}
+  .ex-item.wrong{border-color:var(--err);background:var(--err-soft)}
+  .ex-item input[type=text]{
+    font-family:'Source Sans 3',sans-serif;font-size:1rem;
+    border:none;border-bottom:2px solid var(--teal);background:transparent;
+    padding:2px 6px;width:130px;color:var(--ink);text-align:center;
+  }
+  .ex-item input[type=text]:focus{outline:none;border-bottom-color:var(--amber)}
+  .fb{font-size:.88rem;margin-top:6px;display:none}
+  .ex-item.right .fb{display:block;color:var(--ok)}
+  .ex-item.wrong .fb{display:block;color:var(--err)}
+  .hintword{color:var(--muted);font-size:.9rem}
+
+  .btn{
+    font-family:'Source Sans 3',sans-serif;font-weight:700;font-size:1rem;
+    background:var(--teal);color:#fff;border:none;border-radius:999px;
+    padding:11px 26px;cursor:pointer;margin:10px 4px 0 0;
+    transition:background .15s;
+  }
+  .btn:hover{background:var(--teal-deep)}
+  .btn.ghost{background:transparent;color:var(--teal);border:1.5px solid var(--teal)}
+  .btn.ghost:hover{background:var(--teal-soft)}
+  .btn:focus-visible,.chip:focus-visible,.opt:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+  /* multiple choice */
+  .opt{
+    display:block;width:100%;text-align:left;
+    font-family:'Source Sans 3',sans-serif;font-size:1rem;color:var(--ink);
+    background:var(--card);border:1.5px solid var(--teal-soft);border-radius:10px;
+    padding:10px 14px;margin:6px 0;cursor:pointer;
+  }
+  .opt:hover{border-color:var(--teal)}
+  .opt.right{border-color:var(--ok);background:var(--ok-soft)}
+  .opt.wrong{border-color:var(--err);background:var(--err-soft)}
+  .opt:disabled{cursor:default;opacity:.9}
+
+  .score{
+    font-family:'Fraunces',serif;font-size:1.4rem;color:var(--teal-deep);
+    margin-top:14px;display:none;
+  }
+
+  /* speaking */
+  .prompt{border-left:4px solid var(--amber);padding:10px 14px;margin:12px 0;background:var(--card);border-radius:0 10px 10px 0}
+  .prompt .en{font-weight:700}
+  .prompt .frame{font-size:.92rem;color:var(--muted);margin-top:4px}
+
+  /* nav */
+  .nav{
+    position:fixed;bottom:0;left:0;right:0;
+    background:var(--card);border-top:1px solid var(--teal-soft);
+    padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+    max-width:100%;z-index:10;
+  }
+  .nav-inner{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;width:100%}
+  .dots{display:flex;gap:6px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--teal-soft);border:none;cursor:pointer;padding:0}
+  .dot.on{background:var(--teal)}
+  .pageno{font-size:.85rem;color:var(--muted)}
+
+  /* cover */
+  .cover{text-align:center;padding:40px 10px 20px}
+  .cover h1{font-size:2.3rem;font-weight:700;color:var(--teal-deep);margin:10px 0 6px}
+  .cover .sub{font-size:1.1rem;color:var(--muted);max-width:480px;margin:0 auto 20px}
+  .brand{
+    display:inline-block;font-family:'Fraunces',serif;font-weight:600;
+    color:var(--teal);border:1.5px solid var(--teal);border-radius:999px;
+    padding:5px 16px;font-size:.9rem;
+  }
+  .toc{max-width:430px;margin:24px auto 0;text-align:left}
+  .toc li{margin:7px 0;list-style:none;padding-left:26px;position:relative}
+  .toc li::before{content:"→";position:absolute;left:0;color:var(--amber);font-weight:700}
+
+  .cta a{color:var(--teal-deep);font-weight:700}
+  ul.plain{padding-left:20px;margin-bottom:10px}
+  ul.plain li{margin:4px 0}
+  .ed-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0}
+  .ed-group{background:var(--card);border-radius:var(--radius);padding:14px;border-top:4px solid var(--teal)}
+  .ed-group h3{margin:0 0 6px;font-size:1.05rem}
+  .ed-group .snd{font-family:'Fraunces',serif;color:var(--amber);font-size:1.3rem}
+  @media(max-width:520px){
+    body{font-size:16px}
+    .cover h1{font-size:1.8rem}
+    .ex-item input[type=text]{width:110px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ PAGE 1 · COVER ============ -->
+<section class="page active" id="p1">
+  <div class="cover">
+    <span class="brand">Alma English Studio</span>
+    <h1>Past Simple<br>pentru profesioniști</h1>
+    <p class="sub">Verbele de care ai nevoie la birou, exerciții cu feedback instant și pronunție pe care o poți asculta — totul într-un singur loc.</p>
+    <div class="card toc">
+      <p class="eyebrow">Ce găsești înăuntru</p>
+      <ul>
+        <li>Verbele regulate și pronunția terminației <em>-ed</em></li>
+        <li>35 de verbe neregulate folosite în business</li>
+        <li>Exerciții interactive cu verificare pe loc</li>
+        <li>Întrebări și negații cu <em>did</em></li>
+        <li>Exerciții ghidate de vorbire</li>
+        <li>Mini-test final cu scor</li>
+      </ul>
+    </div>
+    <div class="note" style="text-align:left">
+      <strong>Când folosești Past Simple?</strong> Când vorbești despre acțiuni terminate, la un moment clar din trecut: <em>I sent the report yesterday. We met the client last week.</em> E timpul pe care îl folosești zilnic când povestești ce ai făcut la muncă.
+    </div>
+    <div class="note" style="text-align:left">
+      🔊 <strong>Sfat:</strong> apasă pe orice verb din carte ca să îi auzi pronunția. Folosește căști sau dă volumul mai tare.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAGE 2 · REGULAR VERBS ============ -->
+<section class="page" id="p2">
+  <p class="eyebrow">Pagina 2 · Verbele regulate</p>
+  <h2>Regula -ed… și cum se pronunță</h2>
+  <p>La verbele regulate, adaugi <strong>-ed</strong>: <em>work → worked</em>. Partea care dă bătăi de cap nu e scrisul, ci pronunția. Terminația <em>-ed</em> are trei sunete posibile:</p>
+
+  <div class="ed-groups">
+    <div class="ed-group">
+      <h3>Sunetul <span class="snd">/t/</span></h3>
+      <p style="font-size:.9rem;color:var(--muted)">după sunete „fără voce" (k, p, s, sh, ch, f)</p>
+      <button class="chip" data-say="worked">🔊 work<em>ed</em></button>
+      <button class="chip" data-say="asked">🔊 ask<em>ed</em></button>
+      <button class="chip" data-say="finished">🔊 finish<em>ed</em></button>
+      <button class="chip" data-say="helped">🔊 help<em>ed</em></button>
+    </div>
+    <div class="ed-group">
+      <h3>Sunetul <span class="snd">/d/</span></h3>
+      <p style="font-size:.9rem;color:var(--muted)">după vocale și sunete „cu voce"</p>
+      <button class="chip" data-say="called">🔊 call<em>ed</em></button>
+      <button class="chip" data-say="planned">🔊 plann<em>ed</em></button>
+      <button class="chip" data-say="emailed">🔊 email<em>ed</em></button>
+      <button class="chip" data-say="agreed">🔊 agre<em>ed</em></button>
+    </div>
+    <div class="ed-group">
+      <h3>Sunetul <span class="snd">/ɪd/</span></h3>
+      <p style="font-size:.9rem;color:var(--muted)">doar după <strong>t</strong> și <strong>d</strong> — aici apare o silabă în plus</p>
+      <button class="chip" data-say="wanted">🔊 want<em>ed</em></button>
+      <button class="chip" data-say="needed">🔊 need<em>ed</em></button>
+      <button class="chip" data-say="started">🔊 start<em>ed</em></button>
+      <button class="chip" data-say="attended">🔊 attend<em>ed</em></button>
+    </div>
+  </div>
+
+  <div class="note"><strong>Cea mai frecventă greșeală:</strong> „work-ĂD". Nu adăuga o silabă în plus decât după <em>t</em> și <em>d</em>! <em>Worked</em> are o singură silabă. Ascultă și repetă cu voce tare.</p></div>
+
+  <h3>Exercițiu rapid: ce sunet auzi?</h3>
+  <p class="hintword">Apasă mai întâi pe 🔊, ascultă, apoi alege sunetul corect.</p>
+  <div id="edquiz"></div>
+</section>
+
+<!-- ============ PAGE 3 · IRREGULAR VERBS ============ -->
+<section class="page" id="p3">
+  <p class="eyebrow">Pagina 3 · Verbele neregulate</p>
+  <h2>35 de verbe neregulate pentru birou</h2>
+  <p>Acestea nu primesc <em>-ed</em> — au forme proprii, pe care le înveți prin ascultare și repetare. Apasă pe fiecare pereche ca să auzi pronunția ambelor forme.</p>
+  <div class="card" style="padding:12px 14px">
+    <table class="vtable" id="verbtable"></table>
+  </div>
+  <div class="note"><strong>Cum înveți lista:</strong> nu toată odată! Alege 7 verbe pe zi, ascultă-le, spune-le cu voce tare de 3 ori și fă o propoziție despre ziua ta de muncă cu fiecare: <em>„I sent three emails this morning."</em></div>
+</section>
+
+<!-- ============ PAGE 4 · GAP FILL ============ -->
+<section class="page" id="p4">
+  <p class="eyebrow">Pagina 4 · Exercițiul 1</p>
+  <h2>Completează forma de trecut</h2>
+  <p>Scrie forma de Past Simple a verbului din paranteză. Apasă apoi pe <strong>Verifică</strong> — primești feedback pe loc.</p>
+  <div class="ex" id="gapfill"></div>
+  <button class="btn" onclick="checkGap()">Verifică răspunsurile</button>
+  <button class="btn ghost" onclick="resetGap()">Reia exercițiul</button>
+  <p class="score" id="gapscore"></p>
+</section>
+
+<!-- ============ PAGE 5 · NEGATIVE & QUESTIONS ============ -->
+<section class="page" id="p5">
+  <p class="eyebrow">Pagina 5 · Negații și întrebări</p>
+  <h2>Did — un singur cuvânt pentru tot</h2>
+  <div class="card">
+    <p><strong>Negativ:</strong> <em>didn't</em> + verbul la forma de bază<br>
+    <button class="chip" data-say="I didn't finish the report.">🔊 I didn't finish the report.</button></p>
+    <p style="margin-top:10px"><strong>Întrebare:</strong> <em>Did</em> + subiect + verbul la forma de bază<br>
+    <button class="chip" data-say="Did you call the client?">🔊 Did you call the client?</button></p>
+  </div>
+  <div class="note"><strong>Atenție:</strong> după <em>did</em> sau <em>didn't</em>, verbul se întoarce la forma de bază. Spunem <em>Did you send…?</em>, nu <s>Did you sent…?</s> — <em>did</em> a preluat deja trecutul.</div>
+
+  <h3>Exercițiu: corectează sau confirmă</h3>
+  <p class="hintword">Scrie doar verbul potrivit în spațiul liber.</p>
+  <div class="ex" id="didex"></div>
+  <button class="btn" onclick="checkDid()">Verifică răspunsurile</button>
+  <button class="btn ghost" onclick="resetDid()">Reia exercițiul</button>
+  <p class="score" id="didscore"></p>
+</section>
+
+<!-- ============ PAGE 6 · TIME EXPRESSIONS ============ -->
+<section class="page" id="p6">
+  <p class="eyebrow">Pagina 6 · Expresii de timp</p>
+  <h2>Semnalele trecutului</h2>
+  <p>Aceste expresii îți spun că fraza cere Past Simple:</p>
+  <div class="card">
+    <button class="chip" data-say="yesterday">🔊 yesterday</button>
+    <button class="chip" data-say="last week">🔊 last week</button>
+    <button class="chip" data-say="last month">🔊 last month</button>
+    <button class="chip" data-say="two days ago">🔊 two days ago</button>
+    <button class="chip" data-say="an hour ago">🔊 an hour ago</button>
+    <button class="chip" data-say="in 2023">🔊 in 2023</button>
+    <button class="chip" data-say="this morning">🔊 this morning</button>
+    <button class="chip" data-say="on Monday">🔊 on Monday</button>
+  </div>
+  <div class="note"><strong>Reține ordinea:</strong> <em>ago</em> vine <u>după</u> perioadă: <em>two days <strong>ago</strong></em> (nu „ago two days"). <em>Last</em> vine <u>înaintea</u> perioadei: <em><strong>last</strong> week</em> — fără „the": spunem <em>last week</em>, nu <s>the last week</s>.</div>
+
+  <h3>Exercițiu: alege varianta corectă</h3>
+  <div id="timequiz"></div>
+</section>
+
+<!-- ============ PAGE 7 · TRANSFORMATION ============ -->
+<section class="page" id="p7">
+  <p class="eyebrow">Pagina 7 · Exercițiul de transformare</p>
+  <h2>Din prezent în trecut</h2>
+  <p>Transformă propozițiile de mai jos la Past Simple. Scrie doar verbul care se schimbă.</p>
+  <div class="ex" id="transform"></div>
+  <button class="btn" onclick="checkTrans()">Verifică răspunsurile</button>
+  <button class="btn ghost" onclick="resetTrans()">Reia exercițiul</button>
+  <p class="score" id="transscore"></p>
+</section>
+
+<!-- ============ PAGE 8 · GUIDED SPEAKING ============ -->
+<section class="page" id="p8">
+  <p class="eyebrow">Pagina 8 · Vorbire ghidată</p>
+  <h2>Acum povestește tu</h2>
+  <p>Gramatica se fixează vorbind. Alege un subiect, apasă 🔊 ca să auzi un model, apoi răspunde <strong>cu voce tare</strong>, 30–60 de secunde. Nu căuta perfecțiunea — caută fluența.</p>
+
+  <div class="prompt">
+    <p class="en">Tell me about your day yesterday.</p>
+    <p class="frame">Sprijin: I started work at… · First, I… · Then I… · After lunch, I… · I finished at…</p>
+    <button class="chip" data-say="Yesterday I started work at nine. First, I checked my emails. Then I had a meeting with my team. After lunch, I called two clients and I finished at six.">🔊 Ascultă un model</button>
+  </div>
+
+  <div class="prompt">
+    <p class="en">Describe your last meeting.</p>
+    <p class="frame">Sprijin: We met on… · We talked about… · My colleague presented… · We decided to…</p>
+    <button class="chip" data-say="We met on Tuesday morning. We talked about the new project. My colleague presented the budget and we decided to start next month.">🔊 Ascultă un model</button>
+  </div>
+
+  <div class="prompt">
+    <p class="en">Talk about a project you finished recently.</p>
+    <p class="frame">Sprijin: The project began in… · I was responsible for… · We had a problem with… but we found… · In the end, we delivered…</p>
+    <button class="chip" data-say="The project began in March. I was responsible for the reports. We had a problem with the deadline, but we found a solution. In the end, we delivered everything on time.">🔊 Ascultă un model</button>
+  </div>
+
+  <div class="prompt">
+    <p class="en">What did you do last weekend?</p>
+    <p class="frame">Sprijin: On Saturday, I… · Then I… · On Sunday, we… · It was…</p>
+    <button class="chip" data-say="On Saturday, I went to the market and I cooked lunch for my family. On Sunday, we visited my parents. It was a relaxing weekend.">🔊 Ascultă un model</button>
+  </div>
+
+  <div class="note"><strong>Sfat de la Alma:</strong> înregistrează-te pe telefon când răspunzi, apoi ascultă-te. Verifică un singur lucru: ai folosit formele de trecut? E cel mai rapid mod de a-ți vedea progresul.</div>
+</section>
+
+<!-- ============ PAGE 9 · FINAL QUIZ ============ -->
+<section class="page" id="p9">
+  <p class="eyebrow">Pagina 9 · Mini-testul final</p>
+  <h2>10 întrebări, fără presiune</h2>
+  <p>Alege varianta corectă. Primești răspunsul imediat, iar la final vezi scorul.</p>
+  <div id="finalquiz"></div>
+  <p class="score" id="finalscore"></p>
+  <button class="btn ghost" onclick="resetFinal()" id="finalreset" style="display:none">Reia testul</button>
+</section>
+
+<!-- ============ PAGE 10 · RECAP + CTA ============ -->
+<section class="page" id="p10">
+  <p class="eyebrow">Pagina 10 · Recapitulare</p>
+  <h2>Ce iei cu tine</h2>
+  <div class="card">
+    <ul class="plain">
+      <li><strong>Regulate:</strong> verb + <em>-ed</em>, pronunțat /t/, /d/ sau /ɪd/ — silabă în plus doar după <em>t</em> și <em>d</em>.</li>
+      <li><strong>Neregulate:</strong> forme proprii — învață-le câte 7 pe zi, cu voce tare.</li>
+      <li><strong>Negativ și întrebări:</strong> <em>didn't / Did you…</em> + verbul la forma de bază.</li>
+      <li><strong>Semnale de timp:</strong> <em>yesterday, last…, …ago, in 2023.</em></li>
+      <li><strong>Vorbește zilnic:</strong> 1 minut despre ziua de ieri e cel mai bun exercițiu.</li>
+    </ul>
+  </div>
+  <div class="note cta">
+    <p><strong>Vrei să exersezi cu cineva, nu doar cu pagina?</strong></p>
+    <p>Eu sunt Alma — partenerul tău de conversație și exercițiu. Lucrăm 1-la-1, online, în ritmul tău.</p>
+    <p>📩 <a href="mailto:alma.epifan@gmail.com">alma.epifan@gmail.com</a><br>
+    💬 <a href="https://wa.me/40726125703">WhatsApp: +40 726 125 703</a><br>
+    🌐 <a href="https://alma-studio.github.io">alma-studio.github.io</a></p>
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:24px">© Alma English Studio · Past Simple pentru profesioniști</p>
+</section>
+
+</div><!-- /wrap -->
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="btn ghost" id="prevBtn" onclick="go(-1)">← Înapoi</button>
+    <div style="text-align:center">
+      <div class="dots" id="dots"></div>
+      <div class="pageno" id="pageno"></div>
+    </div>
+    <button class="btn" id="nextBtn" onclick="go(1)">Înainte →</button>
+  </div>
+</nav>
+
+<script>
+/* ---------- Text-to-speech ---------- */
+let voices=[];
+function loadVoices(){voices=speechSynthesis.getVoices();}
+loadVoices();
+if(typeof speechSynthesis!=='undefined'){speechSynthesis.onvoiceschanged=loadVoices;}
+function say(text,btn){
+  if(!('speechSynthesis' in window)){alert('Browserul tău nu suportă redarea audio. Încearcă Chrome sau Edge.');return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-GB';
+  const v=voices.find(v=>v.lang==='en-GB')||voices.find(v=>v.lang&&v.lang.startsWith('en'));
+  if(v)u.voice=v;
+  u.rate=0.9;
+  if(btn){btn.classList.add('playing');u.onend=()=>btn.classList.remove('playing');u.onerror=()=>btn.classList.remove('playing');}
+  speechSynthesis.speak(u);
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-say]');
+  if(c)say(c.dataset.say,c);
+});
+
+/* ---------- Page navigation ---------- */
+const PAGES=10;let cur=1;
+const dotsEl=document.getElementById('dots');
+for(let i=1;i<=PAGES;i++){
+  const d=document.createElement('button');
+  d.className='dot';d.setAttribute('aria-label','Pagina '+i);
+  d.onclick=()=>show(i);dotsEl.appendChild(d);
+}
+function show(n){
+  cur=Math.max(1,Math.min(PAGES,n));
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===cur-1));
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur-1));
+  document.getElementById('pageno').textContent='Pagina '+cur+' din '+PAGES;
+  document.getElementById('prevBtn').style.visibility=cur===1?'hidden':'visible';
+  document.getElementById('nextBtn').style.visibility=cur===PAGES?'hidden':'visible';
+  window.scrollTo({top:0});
+  speechSynthesis.cancel();
+}
+function go(d){show(cur+d);}
+show(1);
+
+/* ---------- Data: irregular verbs ---------- */
+const VERBS=[
+ ["be","was / were","a fi"],["become","became","a deveni"],["begin","began","a începe"],
+ ["build","built","a construi"],["buy","bought","a cumpăra"],["choose","chose","a alege"],
+ ["come","came","a veni"],["deal","dealt","a gestiona / a trata"],["do","did","a face"],
+ ["feel","felt","a simți"],["find","found","a găsi"],["get","got","a obține / a primi"],
+ ["give","gave","a da"],["go","went","a merge"],["grow","grew","a crește"],
+ ["have","had","a avea"],["hold","held","a ține (o ședință)"],["keep","kept","a păstra"],
+ ["know","knew","a ști"],["lead","led","a conduce"],["leave","left","a pleca"],
+ ["lose","lost","a pierde"],["make","made","a face / a produce"],["mean","meant","a însemna"],
+ ["meet","met","a se întâlni"],["pay","paid","a plăti"],["put","put","a pune"],
+ ["read","read","a citi"],["rise","rose","a crește (prețuri)"],["run","ran","a conduce / a alerga"],
+ ["say","said","a spune"],["sell","sold","a vinde"],["send","sent","a trimite"],
+ ["speak","spoke","a vorbi"],["spend","spent","a cheltui / a petrece"],["take","took","a lua"],
+ ["tell","told","a spune (cuiva)"],["think","thought","a gândi"],["understand","understood","a înțelege"],
+ ["write","wrote","a scrie"]
+];
+const vt=document.getElementById('verbtable');
+VERBS.forEach(([b,p,ro])=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><button class="chip" data-say="${b}, ${p}">🔊 ${b} — <em>${p}</em></button></td><td>${ro}</td>`;
+  vt.appendChild(tr);
+});
+
+/* ---------- Page 2: -ed sound quiz ---------- */
+const EDQ=[
+ {w:"managed",a:"/d/"},{w:"booked",a:"/t/"},{w:"presented",a:"/ɪd/"},
+ {w:"discussed",a:"/t/"},{w:"delivered",a:"/d/"},{w:"invited",a:"/ɪd/"}
+];
+const edEl=document.getElementById('edquiz');
+EDQ.forEach((q,i)=>{
+  const div=document.createElement('div');
+  div.className='ex-item';
+  div.innerHTML=`<button class="chip" data-say="${q.w}">🔊 ${q.w}</button> `+
+    ["/t/","/d/","/ɪd/"].map(s=>`<button class="btn ghost" style="padding:6px 16px;margin-top:6px" onclick="edAnswer(this,${i},'${s}')">${s}</button>`).join(' ')+
+    `<p class="fb"></p>`;
+  edEl.appendChild(div);
+});
+function edAnswer(btn,i,s){
+  const item=btn.closest('.ex-item');const fb=item.querySelector('.fb');
+  if(s===EDQ[i].a){item.classList.remove('wrong');item.classList.add('right');fb.textContent='✔ Corect! '+EDQ[i].w+' se termină în '+s+'.';}
+  else{item.classList.remove('right');item.classList.add('wrong');fb.textContent='✘ Mai ascultă o dată și încearcă din nou.';}
+}
+
+/* ---------- Helpers ---------- */
+function norm(s){return s.trim().toLowerCase().replace(/’/g,"'");}
+
+/* ---------- Page 4: gap fill ---------- */
+const GAP=[
+ {pre:"I ",v:"send",post:" the invoice to the client yesterday.",a:["sent"]},
+ {pre:"We ",v:"have",post:" a long meeting on Monday.",a:["had"]},
+ {pre:"She ",v:"finish",post:" the presentation an hour ago.",a:["finished"]},
+ {pre:"They ",v:"buy",post:" new laptops for the team last month.",a:["bought"]},
+ {pre:"My manager ",v:"tell",post:" me about the changes.",a:["told"]},
+ {pre:"I ",v:"work",post:" from home two days last week.",a:["worked"]},
+ {pre:"He ",v:"speak",post:" with the HR department this morning.",a:["spoke"]},
+ {pre:"We ",v:"pay",post:" the supplier on Friday.",a:["paid"]},
+ {pre:"The company ",v:"grow",post:" a lot in 2024.",a:["grew"]},
+ {pre:"I ",v:"take",post:" a day off last Thursday.",a:["took"]}
+];
+buildFill('gapfill',GAP);
+function buildFill(id,data){
+  const el=document.getElementById(id);el.innerHTML='';
+  data.forEach((q,i)=>{
+    const div=document.createElement('div');div.className='ex-item';
+    div.innerHTML=`${i+1}. ${q.pre}<input type="text" autocapitalize="off" autocomplete="off" data-i="${i}">${q.post} <span class="hintword">(${q.v})</span><p class="fb"></p>`;
+    el.appendChild(div);
+  });
+}
+function checkFill(id,data,scoreId){
+  let ok=0;
+  document.querySelectorAll('#'+id+' .ex-item').forEach((item,i)=>{
+    const inp=item.querySelector('input');const fb=item.querySelector('.fb');
+    if(data[i].a.includes(norm(inp.value))){item.classList.remove('wrong');item.classList.add('right');fb.textContent='✔ Corect!';ok++;}
+    else{item.classList.remove('right');item.classList.add('wrong');fb.textContent='✘ Răspunsul corect: '+data[i].a[0];}
+  });
+  const s=document.getElementById(scoreId);
+  s.style.display='block';
+  s.textContent=`Scor: ${ok} din ${data.length}`+(ok===data.length?' — excelent! 🎉':ok>=data.length*0.7?' — foarte bine!':' — reia exercițiul, e normal la început.');
+}
+function checkGap(){checkFill('gapfill',GAP,'gapscore');}
+function resetGap(){buildFill('gapfill',GAP);document.getElementById('gapscore').style.display='none';}
+
+/* ---------- Page 5: did exercise ---------- */
+const DID=[
+ {pre:"Did you ",post:" the email? (send)",a:["send"]},
+ {pre:"I didn't ",post:" the report on time. (finish)",a:["finish"]},
+ {pre:"Did she ",post:" the client yesterday? (call)",a:["call"]},
+ {pre:"We didn't ",post:" a decision at the meeting. (make)",a:["make"]},
+ {pre:"Did they ",post:" the contract? (sign)",a:["sign"]},
+ {pre:"He didn't ",post:" to the office on Friday. (go)",a:["go"]}
+];
+buildFill('didex',DID);
+function checkDid(){checkFill('didex',DID,'didscore');}
+function resetDid(){buildFill('didex',DID);document.getElementById('didscore').style.display='none';}
+
+/* ---------- Page 6: time quiz ---------- */
+const TIME=[
+ {q:"I met the new director ___.",opts:["two weeks ago","ago two weeks","since two weeks"],a:0},
+ {q:"We launched the product ___.",opts:["the last month","last month","in last month"],a:1},
+ {q:"She joined the company ___ 2023.",opts:["on","at","in"],a:2},
+ {q:"___ did you arrive at the office?",opts:["What time","How time","Which hour"],a:0}
+];
+const tEl=document.getElementById('timequiz');
+TIME.forEach((q,i)=>{
+  const div=document.createElement('div');div.className='ex-item';
+  div.innerHTML=`<p><strong>${i+1}.</strong> ${q.q}</p>`+
+    q.opts.map((o,j)=>`<button class="opt" onclick="timeAnswer(this,${i},${j})">${o}</button>`).join('')+`<p class="fb"></p>`;
+  tEl.appendChild(div);
+});
+function timeAnswer(btn,i,j){
+  const item=btn.closest('.ex-item');const fb=item.querySelector('.fb');
+  item.querySelectorAll('.opt').forEach(b=>b.classList.remove('right','wrong'));
+  if(j===TIME[i].a){btn.classList.add('right');item.classList.remove('wrong');item.classList.add('right');fb.textContent='✔ Corect!';}
+  else{btn.classList.add('wrong');item.classList.remove('right');item.classList.add('wrong');fb.textContent='✘ Mai încearcă.';}
+}
+
+/* ---------- Page 7: transformation ---------- */
+const TRANS=[
+ {pre:"Every day I check my emails. → Yesterday I ",post:" my emails.",a:["checked"]},
+ {pre:"We usually meet on Zoom. → Last week we ",post:" on Zoom.",a:["met"]},
+ {pre:"She writes the weekly report. → She ",post:" the weekly report on Friday.",a:["wrote"]},
+ {pre:"I leave the office at 6. → Yesterday I ",post:" the office at 7.",a:["left"]},
+ {pre:"They sell software to banks. → In 2024 they ",post:" software to three banks.",a:["sold"]},
+ {pre:"He leads the sales team. → He ",post:" the sales team for five years.",a:["led"]},
+ {pre:"We spend a lot on marketing. → Last year we ",post:" a lot on marketing.",a:["spent"]},
+ {pre:"I think it's a good idea. → I ",post:" it was a good idea.",a:["thought"]}
+];
+buildFill('transform',TRANS);
+function checkTrans(){checkFill('transform',TRANS,'transscore');}
+function resetTrans(){buildFill('transform',TRANS);document.getElementById('transscore').style.display='none';}
+
+/* ---------- Page 9: final quiz ---------- */
+const FINAL=[
+ {q:"Yesterday I ___ three meetings.",opts:["have","had","haved"],a:1},
+ {q:"She ___ the client an email this morning.",opts:["sent","send","sended"],a:0},
+ {q:"___ you finish the presentation?",opts:["Do","Does","Did"],a:2},
+ {q:"We didn't ___ the deadline.",opts:["missed","miss","missing"],a:1},
+ {q:"The CEO ___ about the results last Friday.",opts:["speaked","spoke","spoken"],a:1},
+ {q:"I ___ a new job in 2025.",opts:["found","finded","find"],a:0},
+ {q:"They ___ the office two hours ago.",opts:["leave","left","leaved"],a:1},
+ {q:"How do you pronounce 'worked'?",opts:["/wɜːkɪd/ — două silabe","/wɜːkt/ — o silabă"],a:1},
+ {q:"We ___ the budget at the meeting.",opts:["discussed","discust","did discussed"],a:0},
+ {q:"Did she ___ the contract?",opts:["signed","sign","signs"],a:1}
+];
+let finalDone=0,finalOk=0;
+function buildFinal(){
+  finalDone=0;finalOk=0;
+  const el=document.getElementById('finalquiz');el.innerHTML='';
+  FINAL.forEach((q,i)=>{
+    const div=document.createElement('div');div.className='ex-item';
+    div.innerHTML=`<p><strong>${i+1}.</strong> ${q.q}</p>`+
+      q.opts.map((o,j)=>`<button class="opt" onclick="finalAnswer(this,${i},${j})">${o}</button>`).join('')+`<p class="fb"></p>`;
+    el.appendChild(div);
+  });
+  document.getElementById('finalscore').style.display='none';
+  document.getElementById('finalreset').style.display='none';
+}
+buildFinal();
+function finalAnswer(btn,i,j){
+  const item=btn.closest('.ex-item');const fb=item.querySelector('.fb');
+  if(item.dataset.done)return;
+  item.dataset.done='1';finalDone++;
+  item.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  if(j===FINAL[i].a){btn.classList.add('right');item.classList.add('right');fb.textContent='✔ Corect!';finalOk++;}
+  else{btn.classList.add('wrong');item.classList.add('wrong');
+    item.querySelectorAll('.opt')[FINAL[i].a].classList.add('right');
+    fb.textContent='✘ Răspunsul corect e marcat cu verde.';}
+  if(finalDone===FINAL.length){
+    const s=document.getElementById('finalscore');
+    s.style.display='block';
+    s.textContent=`Scor final: ${finalOk} din ${FINAL.length}`+(finalOk>=9?' — impresionant! 🎉':finalOk>=7?' — foarte bine!':' — reia paginile 2–7 și încearcă din nou. Progresul vine din repetare.');
+    document.getElementById('finalreset').style.display='inline-block';
+  }
+}
+function resetFinal(){buildFinal();}
+</script>
+</body>
+</html>

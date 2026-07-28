@@ -498,7 +498,8 @@ function buildFill(id,data){
   const el=document.getElementById(id);el.innerHTML='';
   data.forEach((q,i)=>{
     const div=document.createElement('div');div.className='ex-item';
-    div.innerHTML=`${i+1}. ${q.pre}<input type="text" autocapitalize="off" autocomplete="off" data-i="${i}">${q.post} <span class="hintword">(${q.v})</span><p class="fb"></p>`;
+    const hint=q.v?` <span class="hintword">(${q.v})</span>`:'';
+    div.innerHTML=`${i+1}. ${q.pre}<input type="text" autocapitalize="off" autocomplete="off" data-i="${i}">${q.post}${hint}<p class="fb"></p>`;
     el.appendChild(div);
   });
 }

@@ -453,6 +453,7 @@ document.addEventListener('click',e=>{
 });
 
 /* ---------- Page navigation ---------- */
+let lrActive=false,lrSession=0; /* starea drill-ului audio, declarată devreme */
 const PAGES=11;let cur=1;
 const dotsEl=document.getElementById('dots');
 for(let i=1;i<=PAGES;i++){
@@ -710,8 +711,7 @@ function fcCheck(){
   setTimeout(()=>{fcLock=false;fcIdx++;fcRender();},1400);
 }
 
-/* --- 2. Listen & repeat --- */
-let lrActive=false,lrSession=0;
+/* --- 2. Listen & repeat (starea e declarată sus, la navigare) --- */
 async function lrToggle(){
   const btn=document.getElementById('lrBtn');
   if(lrActive){lrActive=false;speechSynthesis.cancel();btn.textContent='▶ Start';document.getElementById('lrWord').textContent='';return;}

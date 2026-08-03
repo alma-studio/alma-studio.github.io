@@ -205,35 +205,17 @@
     font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
     color:var(--gray-mid); margin-bottom:28px;
   }
-  .arc-line{
-    position:relative;
-    height:2px;
-    background:var(--gray-faint);
-    margin:0 4px 18px;
+  .arc-chart{width:100%; height:auto; display:block;}
+  .arc-chart .grid-line{stroke:var(--line); stroke-width:1;}
+  .arc-chart .trend-line{
+    fill:none; stroke:var(--accent); stroke-width:3;
+    stroke-linecap:round; stroke-linejoin:round;
   }
-  .arc-line .fill{
-    position:absolute; left:0; top:0; height:2px;
-    width:100%;
-    background:linear-gradient(90deg, var(--gray-faint), var(--ink));
-  }
-  .arc-points{
-    display:flex; justify-content:space-between; margin-top:-19px;
-  }
-  .arc-point{
-    display:flex; flex-direction:column; align-items:center; gap:12px;
-    width:64px;
-  }
-  .arc-dot{
-    border-radius:50%;
-    background:var(--white);
-    border:2px solid var(--gray-faint);
-  }
-  .arc-point:nth-child(1) .arc-dot{width:10px; height:10px;}
-  .arc-point:nth-child(2) .arc-dot{width:13px; height:13px; border-color:var(--gray-mid);}
-  .arc-point:nth-child(3) .arc-dot{width:16px; height:16px; border-color:var(--ink-soft);}
-  .arc-point:nth-child(4) .arc-dot{width:20px; height:20px; border-color:var(--ink); background:var(--ink);}
-  .arc-point .n{font-size:12px; font-weight:700; color:var(--gray-mid);}
-  .arc-point:nth-child(4) .n{color:var(--ink);}
+  .arc-chart .trend-fill{fill:url(#arcGradient); opacity:0.5;}
+  .arc-chart .pt{fill:var(--white); stroke:var(--gray-faint); stroke-width:2;}
+  .arc-chart .pt.pt-active{fill:var(--accent); stroke:var(--accent);}
+  .arc-chart .pt-label{font-size:11px; font-weight:700; fill:var(--gray-mid); font-family:'Source Sans 3',sans-serif;}
+  .arc-chart .pt-label.pt-label-active{fill:var(--ink);}
 
   .arc-feelings{margin-top:26px; padding-top:24px; border-top:1px solid var(--line);}
   .arc-feelings .now{font-size:14.5px; color:var(--gray-mid); line-height:1.55;}
@@ -582,13 +564,25 @@
 
     <div class="arc-card">
       <div class="arc-label">Ce se schimbă, ședință după ședință</div>
-      <div class="arc-line"><div class="fill"></div></div>
-      <div class="arc-points">
-        <div class="arc-point"><div class="arc-dot"></div><span class="n">1</span></div>
-        <div class="arc-point"><div class="arc-dot"></div><span class="n">2</span></div>
-        <div class="arc-point"><div class="arc-dot"></div><span class="n">3</span></div>
-        <div class="arc-point"><div class="arc-dot"></div><span class="n">4</span></div>
-      </div>
+      <svg class="arc-chart" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="arcGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FF7A3D" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#FF7A3D" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <line class="grid-line" x1="10" y1="105" x2="370" y2="105"/>
+        <path class="trend-fill" d="M30,100 L110,88 L150,92 L230,55 L270,62 L350,20 L350,105 L30,105 Z"/>
+        <path class="trend-line" d="M30,100 L110,88 L150,92 L230,55 L270,62 L350,20"/>
+        <circle class="pt" cx="30" cy="100" r="5"/>
+        <circle class="pt" cx="150" cy="92" r="6"/>
+        <circle class="pt" cx="270" cy="62" r="7"/>
+        <circle class="pt pt-active" cx="350" cy="20" r="8"/>
+        <text class="pt-label" x="30" y="122" text-anchor="middle">1</text>
+        <text class="pt-label" x="150" y="122" text-anchor="middle">2</text>
+        <text class="pt-label" x="270" y="122" text-anchor="middle">3</text>
+        <text class="pt-label pt-label-active" x="350" y="122" text-anchor="middle">4</text>
+      </svg>
       <div class="arc-feelings">
         <div class="now"><strong>Ședința 1:</strong> stabilim împreună obiectivele și strategia de învățare, începi să te relaxezi și să comunici mai fluid.</div>
         <div class="then"><strong>Ședința 4:</strong> îți organizezi cuvintele mai ușor, exersezi gramatica direct în conversație și folosești activ vocabular pentru job.</div>

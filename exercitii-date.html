@@ -343,7 +343,7 @@ function render(){
    state.date=null;
    state.currentNumber=randomOrdinalNumber();
    let n=state.currentNumber;
-   if(state.mode==="read"){p.innerHTML=`<div class="big">${n}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Write the ordinal number in English">`}
+   if(state.mode==="read"){p.innerHTML=`<div class="big">${n}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Type what you read">`}
    if(state.mode==="listen"){p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the number</button><p class="hint">Listen, then type the ordinal number you hear.</p></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the ordinal you hear">`;hear.onclick=()=>speak(`the ${ord[n]}`)}
    if(state.mode==="choose"){
      let correct=ord[n];
@@ -365,7 +365,7 @@ function render(){
  } else if(c.yearsOnly){
    state.date=randomDate();
    let y=state.date.getFullYear();
-   if(state.mode==="read"){p.innerHTML=`<div class="big">${y}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Write the year in English">`}
+   if(state.mode==="read"){p.innerHTML=`<div class="big">${y}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Type what you read">`}
    if(state.mode==="listen"){p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the year</button><p class="hint">Listen, then type the year you hear.</p></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the year you hear">`;hear.onclick=()=>speak(yearWords(y))}
    if(state.mode==="choose"){
      let correct=yearWords(y);
@@ -387,7 +387,7 @@ function render(){
    if(state.mode==="teacher"){let arr=Array.from({length:10},()=>randomDate().getFullYear());p.innerHTML=`<div><div class="question">10 Random Years</div><p class="hint">Quick-fire speaking practice.</p></div>`;a.innerHTML=arr.map((yy,i)=>`<div class="choice"><b>${i+1}.</b> ${yy}</div>`).join("")}
  } else {
    state.date=randomDate();
-   if(state.mode==="read"){p.innerHTML=`<div class="big">${numeric(state.date)}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Write the date in English">`}
+   if(state.mode==="read"){p.innerHTML=`<div class="big">${numeric(state.date)}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Type what you read">`}
    if(state.mode==="listen"){p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the date</button><p class="hint">Listen, then type the date you hear.</p></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the date you hear">`;hear.onclick=()=>speak(spoken(state.date))}
    if(state.mode==="choose"){
      let correct=written(state.date),d=state.date.getDate(),m=months[state.date.getMonth()],y=state.date.getFullYear();

@@ -137,6 +137,29 @@ button.action:hover{opacity:0.88;}
 footer{text-align:center; padding:32px 20px; color:var(--gray-mid); font-size:13.5px;}
 footer a{color:var(--ink-soft); font-weight:600;}
 
+.info-panel{
+  background:var(--white); border:1px solid var(--line); border-radius:14px;
+  margin-bottom:20px; overflow:hidden;
+}
+.info-panel summary{
+  cursor:pointer; padding:14px 18px; font-weight:700; font-size:14.5px; color:var(--ink);
+  list-style:none; display:flex; align-items:center; gap:8px;
+}
+.info-panel summary::-webkit-details-marker{display:none;}
+.info-panel summary::before{content:"ℹ️"; font-size:15px;}
+.info-panel summary::after{content:"▾"; margin-left:auto; color:var(--gray-mid); transition:transform 0.15s;}
+.info-panel[open] summary::after{transform:rotate(180deg);}
+.info-panel-body{padding:2px 18px 20px;}
+.info-table{width:100%; border-collapse:collapse; font-size:14px; margin-top:6px;}
+.info-table th{
+  text-align:left; padding:8px 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.03em;
+  color:var(--gray-mid); border-bottom:1px solid var(--line);
+}
+.info-table td{padding:9px 10px; border-bottom:1px solid var(--line); color:var(--ink-soft);}
+.info-table td:first-child{color:var(--ink); font-weight:600; white-space:nowrap;}
+.info-table tr:last-child td{border-bottom:none;}
+.info-note{margin:14px 0 0; font-size:13.5px; color:var(--gray-mid); line-height:1.5;}
+
 @media(max-width:650px){
   .toolbar{grid-template-columns:1fr}
   .tabs{grid-template-columns:1fr 1fr}
@@ -160,6 +183,19 @@ footer a{color:var(--ink-soft); font-weight:600;}
 <main class="wrap">
   <h1 class="tool-title">Date Practice Trainer</h1>
   <p class="sub">Citește, ascultă, scrie și spune date calendaristice în engleză.</p>
+
+  <details class="info-panel">
+    <summary>Diferența dintre British și American English la date</summary>
+    <div class="info-panel-body">
+      <table class="info-table">
+        <tr><th></th><th>British English</th><th>American English</th></tr>
+        <tr><td>Format numeric</td><td>ziuă/lună/an — 01/08/2027</td><td>lună/ziuă/an — 08/01/2027</td></tr>
+        <tr><td>Scris</td><td>1st August 2027</td><td>August 1st, 2027</td></tr>
+        <tr><td>Vorbit</td><td>the first of August, twenty twenty-seven</td><td>August first, twenty twenty-seven</td></tr>
+      </table>
+      <p class="info-note">Cea mai frecventă capcană: <b>01/08/2027</b> înseamnă <b>1 august</b> în britanică, dar <b>8 ianuarie</b> în americană — aceeași cifre, zile diferite. Alege varianta de mai sus în funcție de ce accent exersezi.</p>
+    </div>
+  </details>
 
   <div class="toolbar">
     <div class="control"><label>English variety</label><select id="variant"><option value="uk">British English</option><option value="us">American English</option></select></div>

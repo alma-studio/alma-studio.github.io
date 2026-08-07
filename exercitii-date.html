@@ -207,7 +207,7 @@ footer a{color:var(--ink-soft); font-weight:600;}
 
   <div class="toolbar">
     <div class="control"><label>English variety</label><select id="variant"><option value="uk">British English</option><option value="us">American English</option></select></div>
-    <div class="control"><label>Level</label><select id="level"><option value="1">Level 1 — Days & months</option><option value="2">Level 2 — Ordinal numbers</option><option value="3" selected>Level 3 — Full dates</option><option value="4">Level 4 — Years</option><option value="5">Level 5 — Real-life dates</option></select></div>
+    <div class="control"><label>Level</label><select id="level"><option value="1">Level 1 — Days & months</option><option value="2">Level 2 — Ordinal numbers</option><option value="3" selected>Level 3 — Full dates</option><option value="4">Level 4 — Years</option></select></div>
   </div>
 
   <div class="tabs">
@@ -242,13 +242,12 @@ const ord={1:"first",2:"second",3:"third",4:"fourth",5:"fifth",6:"sixth",7:"seve
 const onesWords=["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
 const tensWords=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
 
-// Level configuration: what each level actually practices
+// Level configuration
 const LEVELS={
-  1:{includeYear:false, requireWords:false},   // Days & months — simplest, numeric shortcuts ok
-  2:{includeYear:false, requireWords:true},    // Ordinal numbers — must write the ordinal as a word
-  3:{includeYear:true,  requireWords:false, yearRange:[2024,2027]}, // Full dates — near-present years
-  4:{includeYear:true,  requireWords:false, yearRange:[1950,2035]}, // Years — wide range, forces real year conversion
-  5:{includeYear:true,  requireWords:true,  yearRange:[1950,2035]}  // Real-life dates — hardest: wide range + words only
+  1:{includeYear:false, requireWords:false},
+  2:{ordinalsOnly:true},
+  3:{includeYear:true,  requireWords:false, yearRange:[2024,2027]},
+  4:{yearsOnly:true, yearRange:[1950,2035]}
 };
 
 let state={mode:"read",variant:"uk",level:3,date:null,score:0,attempts:0};
@@ -258,7 +257,7 @@ function cfg(){return LEVELS[state.level]}
 function suffix(n){let v=n%100;if(v>=11&&v<=13)return n+"th";return n+({1:"st",2:"nd",3:"rd"}[n%10]||"th")}
 function twoDigitWords(n){if(n<20)return onesWords[n];let t=Math.floor(n/10),o=n%10;return o===0?tensWords[t]:tensWords[t]+"-"+onesWords[o]}
 function yearWords(y){if(y===2000)return "two thousand";let first=Math.floor(y/100),second=y%100;let firstW=twoDigitWords(first);let secondW;if(second===0)secondW="hundred";else if(second<10)secondW="oh "+onesWords[second];else secondW=twoDigitWords(second);return `${firstW} ${secondW}`}
-function yearWordsFull(y){let first=Math.floor(y/1000),rest=y%1000;return `${onesWords[first]} thousand ${twoDigitWords(rest)}`}
+function yearWordsFull(y){let thousands=Math.floor(y/1000),remainder=y%1000,hundreds=Math.floor(remainder/100),tensOnes=remainder%100;let parts=[onesWords[thousands]+" thousand"];if(hundreds>0)parts.push(onesWords[hundreds]+" hundred");if(tensOnes>0){parts.push(tensOnes<10?"oh "+onesWords[tensOnes]:twoDigitWords(tensOnes))}return parts.join(" ")}
 
 function randomDate(){
   let c=cfg();
@@ -294,10 +293,8 @@ function acceptable(dt){
   let c=cfg();
   let d=dt.getDate(),m=months[dt.getMonth()],y=dt.getFullYear();
   let yw=c.includeYear?yearWords(y):null, ywf=c.includeYear?yearWordsFull(y):null;
-  let yPart=c.includeYear?` ${y}`:"", yPartComma=c.includeYear?`, ${y}`:"";
   let a=[];
 
-  // Word-based phrasings (UK + US style), always accepted
   if(c.includeYear){
     a.push(`the ${ord[d]} of ${m} ${y}`, `${ord[d]} of ${m} ${y}`);
     a.push(`the ${ord[d]} of ${m} ${yw}`, `the ${ord[d]} of ${m} ${ywf}`, `the ${ord[d]} of ${m}, ${yw}`, `${ord[d]} of ${m} ${yw}`);
@@ -307,7 +304,6 @@ function acceptable(dt){
   }
 
   if(!c.requireWords){
-    // Digit-suffix shortcuts (1st, 2nd...) and pure numeric — only when words aren't required
     if(c.includeYear){
       a.push(`${d} ${m} ${y}`, `${suffix(d)} ${m} ${y}`, `${m} ${suffix(d)} ${y}`, `${m} ${suffix(d)} ${yw}`, `${m} ${d} ${yw}`);
     } else {
@@ -319,43 +315,127 @@ function acceptable(dt){
   return a.map(norm);
 }
 
+// ---- Years-only helpers (Level 4) ----
+function acceptableYear(y){
+  return [String(y), yearWords(y), yearWordsFull(y), `the year ${y}`].map(norm);
+}
+
+// ---- Ordinals-only helpers (Level 2) ----
+function randomOrdinalNumber(){return 1+Math.floor(Math.random()*31)}
+function acceptableOrdinal(n){
+  return [String(n), suffix(n), ord[n], `the ${ord[n]}`].map(norm);
+}
+
 function speak(t){if(!("speechSynthesis" in window)){feedback(false,"Audio is not available in this browser.");return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang=state.variant==="uk"?"en-GB":"en-US";u.rate=.82;speechSynthesis.speak(u)}
 function feedback(ok,msg){let f=document.getElementById("feedback");f.className="feedback show "+(ok?"ok":"bad");f.innerHTML=msg}
 function clearFeedback(){let f=document.getElementById("feedback");f.className="feedback";f.innerHTML=""}
 function updateScore(){score.textContent=state.score;attempts.textContent=state.attempts}
 
 function render(){
- clearFeedback(); state.date=randomDate();
+ clearFeedback();
+ const c=cfg();
  const p=document.getElementById("prompt"),a=document.getElementById("answer");
  modeLabel.textContent={read:"Read the date",listen:"Listen & type",choose:"Choose the form",calendar:"Calendar challenge",speaking:"Speaking mode",teacher:"Teacher mode"}[state.mode];
  check.style.display=["choose","speaking","teacher"].includes(state.mode)?"none":"inline-block";
  reveal.style.display=state.mode==="teacher"?"none":"inline-block";
 
- if(state.mode==="read"){p.innerHTML=`<div class="big">${numeric(state.date)}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Write the date in English">`}
- if(state.mode==="listen"){p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the date</button><p class="hint">Listen, then type the date you hear.</p></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the date you hear">`;hear.onclick=()=>speak(spoken(state.date))}
- if(state.mode==="choose"){
-   let correct=written(state.date),d=state.date.getDate(),m=months[state.date.getMonth()],y=state.date.getFullYear();
-   let wrong1, wrong2;
-   if(cfg().includeYear){
-     wrong1 = state.variant==="uk" ? `${m} ${suffix(d)}, ${y}` : `${suffix(d)} ${m} ${y}`;
-     wrong2 = state.variant==="uk" ? `${suffix(Math.max(1,d-1))} ${m} ${y}` : `${m} ${suffix(Math.max(1,d-1))}, ${y}`;
-   } else {
-     wrong1 = state.variant==="uk" ? `${m} ${suffix(d)}` : `${suffix(d)} ${m}`;
-     wrong2 = state.variant==="uk" ? `${suffix(Math.max(1,d-1))} ${m}` : `${m} ${suffix(Math.max(1,d-1))}`;
+ if(c.ordinalsOnly){
+   state.date=null;
+   state.currentNumber=randomOrdinalNumber();
+   let n=state.currentNumber;
+   if(state.mode==="read"){p.innerHTML=`<div class="big">${n}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Write the ordinal number in English">`}
+   if(state.mode==="listen"){p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the number</button><p class="hint">Listen, then type the ordinal number you hear.</p></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the ordinal you hear">`;hear.onclick=()=>speak(`the ${ord[n]}`)}
+   if(state.mode==="choose"){
+     let correct=ord[n];
+     let pool=[n-1,n+1,n-2,n+2].filter(x=>x>=1&&x<=31&&x!==n);
+     let w1=ord[pool[0]], w2=ord[pool[1]];
+     let opts=[correct,w1,w2].sort(()=>Math.random()-.5);
+     p.innerHTML=`<div class="big">${n}</div>`;
+     a.innerHTML=opts.map(x=>`<button class="choice">${x}</button>`).join("");
+     document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{state.attempts++;if(b.textContent===correct){state.score++;feedback(true,"Correct!")}else feedback(false,`Correct answer: <b>${correct}</b>`);updateScore()})
    }
-   let opts=[correct,wrong1,wrong2].sort(()=>Math.random()-.5);
-   p.innerHTML=`<div class="big">${numeric(state.date)}</div>`;
-   a.innerHTML=opts.map(x=>`<button class="choice">${x}</button>`).join("");
-   document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{state.attempts++;if(b.textContent===correct){state.score++;feedback(true,"Correct!")}else feedback(false,`Correct answer: <b>${correct}</b>`);updateScore()})
+   if(state.mode==="calendar"){
+     let cells="";
+     for(let i=1;i<=31;i++)cells+=`<span class="day ${i===n?"target":""}">${i}</span>`;
+     p.innerHTML=`<div><div class="question">Numbers 1–31</div><div class="calendar">${cells}</div><div>Write the highlighted number as an ordinal.</div></div>`;
+     a.innerHTML=`<input id="answerInput" placeholder="e.g. the twenty-first">`;
+   }
+   if(state.mode==="speaking"){p.innerHTML=`<div><div class="big">${n}</div><p class="hint">Say the ordinal aloud, then hear the model.</p></div>`;a.innerHTML=`<button id="model" class="listen">🔊 Hear model pronunciation</button>`;model.onclick=()=>speak(`the ${ord[n]}`)}
+   if(state.mode==="teacher"){let arr=Array.from({length:10},randomOrdinalNumber);p.innerHTML=`<div><div class="question">10 Random Numbers</div><p class="hint">Quick-fire ordinal speaking practice.</p></div>`;a.innerHTML=arr.map((nn,i)=>`<div class="choice"><b>${i+1}.</b> ${nn} → ${ord[nn]}</div>`).join("")}
+ } else if(c.yearsOnly){
+   state.date=randomDate();
+   let y=state.date.getFullYear();
+   if(state.mode==="read"){p.innerHTML=`<div class="big">${y}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Write the year in English">`}
+   if(state.mode==="listen"){p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the year</button><p class="hint">Listen, then type the year you hear.</p></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the year you hear">`;hear.onclick=()=>speak(yearWords(y))}
+   if(state.mode==="choose"){
+     let correct=yearWords(y);
+     let wrongYear1=y+(Math.random()<0.5?1:-1);
+     let wrongYear2=y+(Math.random()<0.5?10:-10);
+     let opts=[correct,yearWords(wrongYear1),yearWords(wrongYear2)].sort(()=>Math.random()-.5);
+     p.innerHTML=`<div class="big">${y}</div>`;
+     a.innerHTML=opts.map(x=>`<button class="choice">${x}</button>`).join("");
+     document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{state.attempts++;if(b.textContent===correct){state.score++;feedback(true,"Correct!")}else feedback(false,`Correct answer: <b>${correct}</b>`);updateScore()})
+   }
+   if(state.mode==="calendar"){
+     let m=state.date.getMonth(),first=new Date(y,m,1).getDay(),total=new Date(y,m+1,0).getDate(),cells=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<b>${x}</b>`).join("");
+     for(let i=0;i<first;i++)cells+="<span></span>";
+     for(let d=1;d<=total;d++)cells+=`<span class="day">${d}</span>`;
+     p.innerHTML=`<div><div class="question">${months[m]} ${y}</div><div class="calendar">${cells}</div><div>What year is shown above?</div></div>`;
+     a.innerHTML=`<input id="answerInput" placeholder="Type the year">`;
+   }
+   if(state.mode==="speaking"){p.innerHTML=`<div><div class="big">${y}</div><p class="hint">Say the year aloud, then hear the model.</p></div>`;a.innerHTML=`<button id="model" class="listen">🔊 Hear model pronunciation</button>`;model.onclick=()=>speak(yearWords(y))}
+   if(state.mode==="teacher"){let arr=Array.from({length:10},()=>randomDate().getFullYear());p.innerHTML=`<div><div class="question">10 Random Years</div><p class="hint">Quick-fire speaking practice.</p></div>`;a.innerHTML=arr.map((yy,i)=>`<div class="choice"><b>${i+1}.</b> ${yy}</div>`).join("")}
+ } else {
+   state.date=randomDate();
+   if(state.mode==="read"){p.innerHTML=`<div class="big">${numeric(state.date)}</div>`;a.innerHTML=`<input id="answerInput" placeholder="Write the date in English">`}
+   if(state.mode==="listen"){p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the date</button><p class="hint">Listen, then type the date you hear.</p></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the date you hear">`;hear.onclick=()=>speak(spoken(state.date))}
+   if(state.mode==="choose"){
+     let correct=written(state.date),d=state.date.getDate(),m=months[state.date.getMonth()],y=state.date.getFullYear();
+     let wrong1, wrong2;
+     if(cfg().includeYear){
+       wrong1 = state.variant==="uk" ? `${m} ${suffix(d)}, ${y}` : `${suffix(d)} ${m} ${y}`;
+       wrong2 = state.variant==="uk" ? `${suffix(Math.max(1,d-1))} ${m} ${y}` : `${m} ${suffix(Math.max(1,d-1))}, ${y}`;
+     } else {
+       wrong1 = state.variant==="uk" ? `${m} ${suffix(d)}` : `${suffix(d)} ${m}`;
+       wrong2 = state.variant==="uk" ? `${suffix(Math.max(1,d-1))} ${m}` : `${m} ${suffix(Math.max(1,d-1))}`;
+     }
+     let opts=[correct,wrong1,wrong2].sort(()=>Math.random()-.5);
+     p.innerHTML=`<div class="big">${numeric(state.date)}</div>`;
+     a.innerHTML=opts.map(x=>`<button class="choice">${x}</button>`).join("");
+     document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{state.attempts++;if(b.textContent===correct){state.score++;feedback(true,"Correct!")}else feedback(false,`Correct answer: <b>${correct}</b>`);updateScore()})
+   }
+   if(state.mode==="calendar"){let y=state.date.getFullYear(),m=state.date.getMonth(),first=new Date(y,m,1).getDay(),total=new Date(y,m+1,0).getDate(),cells=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<b>${x}</b>`).join("");for(let i=0;i<first;i++)cells+="<span></span>";for(let d=1;d<=total;d++)cells+=`<span class="day ${d===state.date.getDate()?"target":""}">${d}</span>`;p.innerHTML=`<div><div class="question">${months[m]} ${y}</div><div class="calendar">${cells}</div><div>What date is highlighted?</div></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the highlighted date">`}
+   if(state.mode==="speaking"){p.innerHTML=`<div><div class="big">${numeric(state.date)}</div><p class="hint">Say the date aloud, then hear the model.</p></div>`;a.innerHTML=`<button id="model" class="listen">🔊 Hear model pronunciation</button>`;model.onclick=()=>speak(spoken(state.date))}
+   if(state.mode==="teacher"){let arr=Array.from({length:10},randomDate);p.innerHTML=`<div><div class="question">10 Random Dates</div><p class="hint">Quick-fire speaking practice.</p></div>`;a.innerHTML=arr.map((d,i)=>`<div class="choice"><b>${i+1}.</b> ${numeric(d)}</div>`).join("")}
  }
- if(state.mode==="calendar"){let y=state.date.getFullYear(),m=state.date.getMonth(),first=new Date(y,m,1).getDay(),total=new Date(y,m+1,0).getDate(),cells=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<b>${x}</b>`).join("");for(let i=0;i<first;i++)cells+="<span></span>";for(let d=1;d<=total;d++)cells+=`<span class="day ${d===state.date.getDate()?"target":""}">${d}</span>`;p.innerHTML=`<div><div class="question">${months[m]} ${y}</div><div class="calendar">${cells}</div><div>What date is highlighted?</div></div>`;a.innerHTML=`<input id="answerInput" placeholder="Type the highlighted date">`}
- if(state.mode==="speaking"){p.innerHTML=`<div><div class="big">${numeric(state.date)}</div><p class="hint">Say the date aloud, then hear the model.</p></div>`;a.innerHTML=`<button id="model" class="listen">🔊 Hear model pronunciation</button>`;model.onclick=()=>speak(spoken(state.date))}
- if(state.mode==="teacher"){let arr=Array.from({length:10},randomDate);p.innerHTML=`<div><div class="question">10 Random Dates</div><p class="hint">Quick-fire speaking practice.</p></div>`;a.innerHTML=arr.map((d,i)=>`<div class="choice"><b>${i+1}.</b> ${numeric(d)}</div>`).join("")}
 
  let inp=document.getElementById("answerInput");if(inp){inp.focus();inp.onkeydown=e=>{if(e.key==="Enter")checkAnswer()}}
 }
-function checkAnswer(){let inp=document.getElementById("answerInput");if(!inp)return;state.attempts++;if(acceptable(state.date).includes(norm(inp.value))){state.score++;feedback(true,`Correct! <b>${written(state.date)}</b>`)}else feedback(false,`A natural answer is <b>${written(state.date)}</b>.`);updateScore()}
-function revealAnswer(){if(state.mode!=="teacher")feedback(true,`<b>${written(state.date)}</b><br>Spoken: ${spoken(state.date)}`)}
+function checkAnswer(){
+  let inp=document.getElementById("answerInput");if(!inp)return;
+  state.attempts++;
+  let c=cfg();
+  if(c.ordinalsOnly){
+    let n=state.currentNumber;
+    if(acceptableOrdinal(n).includes(norm(inp.value))){state.score++;feedback(true,`Correct! <b>the ${ord[n]}</b>`)}
+    else feedback(false,`A natural answer is <b>the ${ord[n]}</b>.`);
+  } else if(c.yearsOnly){
+    let y=state.date.getFullYear();
+    if(acceptableYear(y).includes(norm(inp.value))){state.score++;feedback(true,`Correct! <b>${yearWords(y)}</b>`)}
+    else feedback(false,`A natural answer is <b>${yearWords(y)}</b>.`);
+  } else {
+    if(acceptable(state.date).includes(norm(inp.value))){state.score++;feedback(true,`Correct! <b>${written(state.date)}</b>`)}
+    else feedback(false,`A natural answer is <b>${written(state.date)}</b>.`);
+  }
+  updateScore();
+}
+function revealAnswer(){
+  if(state.mode==="teacher")return;
+  let c=cfg();
+  if(c.ordinalsOnly){feedback(true,`<b>the ${ord[state.currentNumber]}</b>`);}
+  else if(c.yearsOnly){let y=state.date.getFullYear();feedback(true,`<b>${yearWords(y)}</b>`);}
+  else feedback(true,`<b>${written(state.date)}</b><br>Spoken: ${spoken(state.date)}`);
+}
 
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");state.mode=t.dataset.mode;render()});
 variant.onchange=()=>{state.variant=variant.value;render()};

@@ -208,7 +208,18 @@ const tensWords=["","","twenty","thirty","forty","fifty","sixty","seventy","eigh
 function twoDigitWords(n){if(n<20)return onesWords[n];let t=Math.floor(n/10),o=n%10;return o===0?tensWords[t]:tensWords[t]+"-"+onesWords[o]}
 function yearWords(y){let first=Math.floor(y/100),second=y%100;let firstW=twoDigitWords(first);let secondW=second===0?"hundred":twoDigitWords(second);return `${firstW} ${secondW}`}
 function yearWordsFull(y){let first=Math.floor(y/1000),rest=y%1000;return `${onesWords[first]} thousand ${twoDigitWords(rest)}`}
-function acceptable(dt){let d=dt.getDate(),m=months[dt.getMonth()],y=dt.getFullYear(),yw=yearWords(y),ywf=yearWordsFull(y),a=[];if(state.variant==="uk"){a=[`${d} ${m} ${y}`,`${suffix(d)} ${m} ${y}`,`the ${ord[d]} of ${m} ${y}`,`${ord[d]} of ${m} ${y}`,`the ${ord[d]} of ${m} ${yw}`,`the ${ord[d]} of ${m} ${ywf}`,`the ${ord[d]} of ${m}, ${yw}`,`${ord[d]} of ${m} ${yw}`,numeric(dt)]}else{a=[`${m} ${d} ${y}`,`${m} ${suffix(d)} ${y}`,`${m} ${ord[d]} ${y}`,`${m} ${ord[d]} ${yw}`,`${m} ${ord[d]}, ${yw}`,`${m} ${suffix(d)} ${yw}`,`${m} ${d} ${yw}`,numeric(dt)]}return a.map(norm)}
+function acceptable(dt){let d=dt.getDate(),m=months[dt.getMonth()],y=dt.getFullYear(),yw=yearWords(y),ywf=yearWordsFull(y),a=[
+  // UK-style phrasings — accepted regardless of chosen variant
+  `${d} ${m} ${y}`,`${suffix(d)} ${m} ${y}`,
+  `the ${ord[d]} of ${m} ${y}`,`${ord[d]} of ${m} ${y}`,
+  `the ${ord[d]} of ${m} ${yw}`,`the ${ord[d]} of ${m} ${ywf}`,
+  `the ${ord[d]} of ${m}, ${yw}`,`${ord[d]} of ${m} ${yw}`,
+  // US-style phrasings — accepted regardless of chosen variant
+  `${m} ${d} ${y}`,`${m} ${suffix(d)} ${y}`,`${m} ${ord[d]} ${y}`,
+  `${m} ${ord[d]} ${yw}`,`${m} ${ord[d]}, ${yw}`,`${m} ${suffix(d)} ${yw}`,`${m} ${d} ${yw}`,
+  // numeric, matching the displayed prompt format for the chosen variant
+  numeric(dt)
+];return a.map(norm)}
 function speak(t){if(!("speechSynthesis" in window)){feedback(false,"Audio is not available in this browser.");return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang=state.variant==="uk"?"en-GB":"en-US";u.rate=.82;speechSynthesis.speak(u)}
 function feedback(ok,msg){let f=document.getElementById("feedback");f.className="feedback show "+(ok?"ok":"bad");f.innerHTML=msg}
 function clearFeedback(){let f=document.getElementById("feedback");f.className="feedback";f.innerHTML=""}

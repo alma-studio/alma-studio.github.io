@@ -418,6 +418,13 @@ function render(){
 
  let inp=document.getElementById("answerInput");if(inp){inp.focus();inp.onkeydown=e=>{if(e.key==="Enter")checkAnswer()}}
 }
+function hasLowercaseMonth(raw){
+  return months.some(m=>{
+    let re=new RegExp("\\b"+m.toLowerCase()+"\\b");
+    let reCorrect=new RegExp("\\b"+m+"\\b");
+    return re.test(raw) && !reCorrect.test(raw);
+  });
+}
 function checkAnswer(){
   let inp=document.getElementById("answerInput");if(!inp)return;
   state.attempts++;
@@ -431,7 +438,14 @@ function checkAnswer(){
     if(acceptableYear(y).includes(norm(inp.value))){state.score++;feedback(true,`Correct! <b>${yearWords(y)}</b>`)}
     else feedback(false,`A natural answer is <b>${yearWords(y)}</b>.`);
   } else {
-    if(acceptable(state.date).includes(norm(inp.value))){state.score++;feedback(true,`Correct! <b>${written(state.date)}</b>`)}
+    if(acceptable(state.date).includes(norm(inp.value))){
+      state.score++;
+      if(hasLowercaseMonth(inp.value)){
+        feedback(true,`Correct! <b>${written(state.date)}</b><br><span style="font-size:13.5px;">📌 Reține: lunile se scriu cu literă mare în engleză — <b>${months[state.date.getMonth()]}</b>, nu ${months[state.date.getMonth()].toLowerCase()}.</span>`);
+      } else {
+        feedback(true,`Correct! <b>${written(state.date)}</b>`);
+      }
+    }
     else feedback(false,`A natural answer is <b>${written(state.date)}</b>.`);
   }
   updateScore();

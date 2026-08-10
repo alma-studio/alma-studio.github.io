@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Top 15 Irregular Verbs — Alma Epifan | Engleză 1:1</title>
+<meta name="description" content="Exercițiu interactiv gratuit: exersează cele mai frecvente 15 verbe neregulate din engleză.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FF7A3D'/%3E%3Cpath d='M22 26 h56 a9 9 0 0 1 9 9 v26 a9 9 0 0 1 -9 9 h-30 l-14 16 v-16 h-12 a9 9 0 0 1 -9 -9 v-26 a9 9 0 0 1 9 -9 z' fill='%23FFF4E6'/%3E%3Ccircle cx='36' cy='48' r='5' fill='%23FF7A3D'/%3E%3Ccircle cx='50' cy='48' r='5' fill='%23FFC53D'/%3E%3Ccircle cx='64' cy='48' r='5' fill='%2316324F'/%3E%3C/svg%3E">
+<style>
+:root{
+  --white:#FFFFFF;
+  --offwhite:#FFF4E6;
+  --ink:#16324F;
+  --ink-soft:#3E5C77;
+  --gray-mid:#8B9BAA;
+  --gray-faint:#D8CBBB;
+  --line:#F0E0CC;
+  --accent:#FF7A3D;
+  --accent-dark:#E8622A;
+  --sun:#FFC53D;
+  --ok:#2E7D5B;
+  --ok-bg:#E9F5EF;
+  --bad:#C1544A;
+  --bad-bg:#FBEAE8;
+}
+*{box-sizing:border-box;}
+body{margin:0; font-family:'Source Sans 3', sans-serif; background:var(--offwhite); color:var(--ink);}
+h1,h2,h3{font-family:'Fraunces', serif; margin:0; letter-spacing:-0.01em;}
+
+header{
+  background:rgba(255,255,255,0.92); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10;
+}
+.nav{max-width:900px; margin:0 auto; padding:16px 20px; display:flex; align-items:center; justify-content:space-between;}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font-family:'Fraunces', serif; font-weight:600; font-size:17px;}
+.brand svg{flex-shrink:0;}
+.back-link{font-size:14px; font-weight:600; color:var(--ink-soft); text-decoration:none;}
+.back-link:hover{color:var(--accent);}
+@media(max-width:600px){
+  .nav{flex-direction:column; align-items:flex-start; gap:10px; padding:14px 16px;}
+  .brand{font-size:15px;}
+  .brand svg{width:22px; height:22px;}
+  .back-link{font-size:13.5px;}
+}
+
+.wrap{max-width:820px;margin:0 auto;padding:40px 20px 60px;}
+h1.tool-title{text-align:center; font-size:38px; font-weight:600; color:var(--ink);}
+.sub{text-align:center;color:var(--ink-soft);margin:10px 0 28px; font-size:16px;}
+@media(max-width:650px){
+  .wrap{padding:28px 16px 50px;}
+  h1.tool-title{font-size:29px;}
+}
+
+/* reference table (collapsible) */
+.info-panel{background:var(--white); border:1px solid var(--line); border-radius:14px; margin-bottom:20px; overflow:hidden;}
+.info-panel summary{cursor:pointer; padding:14px 18px; font-weight:700; font-size:14.5px; color:var(--ink); list-style:none; display:flex; align-items:center; gap:8px;}
+.info-panel summary::-webkit-details-marker{display:none;}
+.info-panel summary::before{content:"📋"; font-size:15px;}
+.info-panel summary::after{content:"▾"; margin-left:auto; color:var(--gray-mid); transition:transform 0.15s;}
+.info-panel[open] summary::after{transform:rotate(180deg);}
+.info-panel-body{padding:2px 18px 20px; overflow-x:auto;}
+.verb-table{width:100%; border-collapse:collapse; font-size:14.5px; margin-top:6px;}
+.verb-table th{text-align:left; padding:8px 10px; font-size:12px; text-transform:uppercase; letter-spacing:0.03em; color:var(--gray-mid); border-bottom:1px solid var(--line);}
+.verb-table td{padding:8px 10px; border-bottom:1px solid var(--line); color:var(--ink-soft);}
+.verb-table td:first-child{color:var(--ink); font-weight:600;}
+.verb-table tr:last-child td{border-bottom:none;}
+
+.tabs{display:grid;gap:10px;margin-bottom:14px; grid-template-columns:repeat(3,1fr);}
+@media(max-width:650px){.tabs{grid-template-columns:1fr 1fr;}}
+.tab{padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--white); font-weight:700; cursor:pointer; font-family:'Source Sans 3',sans-serif; font-size:14px; color:var(--ink-soft); transition:background 0.15s,color 0.15s,border-color 0.15s;}
+.tab:hover{border-color:var(--accent);}
+.tab.active{background:var(--ink); color:var(--white); border-color:var(--ink);}
+
+.card{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:28px; box-shadow:0 20px 40px -28px rgba(22,50,79,0.18);}
+.top{display:flex;justify-content:space-between;color:var(--gray-mid);font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.03em;}
+.top b{color:var(--ink); font-family:'Fraunces',serif; font-weight:600; text-transform:none; letter-spacing:0;}
+.prompt{min-height:150px;display:grid;place-items:center;text-align:center; margin:18px 0;}
+.big{font-size:44px;font-weight:600; font-family:'Fraunces',serif; color:var(--ink);}
+.pronoun{font-size:20px; color:var(--ink-soft); margin-bottom:6px; font-weight:600;}
+input{width:100%;padding:14px;border:1px solid var(--line);border-radius:10px;font-size:16px; font-family:'Source Sans 3',sans-serif; color:var(--ink); background:var(--offwhite);}
+input:focus{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent);}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button.action{border:0;border-radius:9px;padding:12px 20px;font-weight:700;cursor:pointer; font-family:'Source Sans 3',sans-serif; font-size:14.5px; transition:opacity 0.15s;}
+button.action:hover{opacity:0.88;}
+.primary{background:var(--accent);color:#fff;}
+.secondary{background:var(--offwhite);color:var(--ink); border:1px solid var(--line) !important;}
+.listen{border:1px solid var(--line);border-radius:999px;padding:14px 22px;background:var(--offwhite);color:var(--ink);font-weight:700;cursor:pointer; font-family:'Source Sans 3',sans-serif; font-size:15px;}
+.listen:hover{border-color:var(--accent); color:var(--accent-dark);}
+.feedback{display:none;margin-top:16px;padding:14px 16px;border-radius:12px; font-size:15px;}
+.feedback.show{display:block}
+.feedback.ok{background:var(--ok-bg);color:var(--ok);}
+.feedback.bad{background:var(--bad-bg);color:var(--bad);}
+.feedback b{font-family:'Fraunces',serif;}
+.choice{display:block;width:100%;text-align:left;margin:8px 0;padding:13px 16px;border:1px solid var(--line);background:var(--white);border-radius:10px;cursor:pointer; font-family:'Source Sans 3',sans-serif; font-size:15px; color:var(--ink); transition:border-color 0.15s,background 0.15s;}
+.choice:hover{border-color:var(--accent); background:var(--offwhite);}
+.hint{color:var(--gray-mid);font-size:14px;}
+.teacher-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;}
+.teacher-item{padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--offwhite); font-size:14.5px; cursor:pointer; transition:opacity 0.15s, background 0.15s; user-select:none;}
+.teacher-item:hover{border-color:var(--accent);}
+.teacher-item.crossed{opacity:0.4; text-decoration:line-through; background:var(--white);}
+.teacher-item b{font-family:'Fraunces',serif; color:var(--ink);}
+
+footer{text-align:center; padding:32px 20px; color:var(--gray-mid); font-size:13.5px;}
+footer a{color:var(--ink-soft); font-weight:600;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="https://almaepifan.ro/" class="brand">
+      <svg width="26" height="26" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="22" fill="#FF7A3D"/><path d="M22 26 h56 a9 9 0 0 1 9 9 v26 a9 9 0 0 1 -9 9 h-30 l-14 16 v-16 h-12 a9 9 0 0 1 -9 -9 v-26 a9 9 0 0 1 9 -9 z" fill="#FFF4E6"/><circle cx="36" cy="48" r="5" fill="#FF7A3D"/><circle cx="50" cy="48" r="5" fill="#FFC53D"/><circle cx="64" cy="48" r="5" fill="#16324F"/></svg>
+      Alma Epifan | Engleză 1:1
+    </a>
+    <a href="https://almaepifan.ro/resurse.html" class="back-link">← Înapoi la resurse</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1 class="tool-title">Top 15 Irregular Verbs</h1>
+  <p class="sub">15 dintre cele mai frecvent folosite verbe neregulate în engleză — exersate în context.</p>
+
+  <details class="info-panel">
+    <summary>Vezi lista completă (base — past — participle)</summary>
+    <div class="info-panel-body">
+      <table class="verb-table">
+        <tr><th>Base</th><th>Past Simple</th><th>Past Participle</th></tr>
+        <tr><td>be</td><td>was / were</td><td>been</td></tr>
+        <tr><td>have</td><td>had</td><td>had</td></tr>
+        <tr><td>do</td><td>did</td><td>done</td></tr>
+        <tr><td>say</td><td>said</td><td>said</td></tr>
+        <tr><td>go</td><td>went</td><td>gone</td></tr>
+        <tr><td>get</td><td>got</td><td>got / gotten</td></tr>
+        <tr><td>make</td><td>made</td><td>made</td></tr>
+        <tr><td>know</td><td>knew</td><td>known</td></tr>
+        <tr><td>think</td><td>thought</td><td>thought</td></tr>
+        <tr><td>see</td><td>saw</td><td>seen</td></tr>
+        <tr><td>come</td><td>came</td><td>come</td></tr>
+        <tr><td>take</td><td>took</td><td>taken</td></tr>
+        <tr><td>give</td><td>gave</td><td>given</td></tr>
+        <tr><td>find</td><td>found</td><td>found</td></tr>
+        <tr><td>tell</td><td>told</td><td>told</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <div class="tabs">
+    <button class="tab active" data-mode="past">Past Simple<br><small style="font-weight:600;opacity:0.7;">(2nd form)</small></button>
+    <button class="tab" data-mode="participle">Past Participle<br><small style="font-weight:600;opacity:0.7;">(3rd form)</small></button>
+    <button class="tab" data-mode="listen">Listen &amp; type</button>
+    <button class="tab" data-mode="choose">Choose the form</button>
+    <button class="tab" data-mode="teacher">Teacher mode</button>
+  </div>
+
+  <section class="card">
+    <div class="top"><span id="modeLabel">Past Simple</span><span>Score: <b id="score">0</b>/<b id="attempts">0</b></span></div>
+    <div id="prompt" class="prompt"></div>
+    <div id="answer"></div>
+    <div id="feedback" class="feedback"></div>
+    <div class="buttons">
+      <button id="check" class="action primary">Check</button>
+      <button id="reveal" class="action secondary">Reveal</button>
+      <button id="next" class="action secondary">Next</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Un exercițiu gratuit de la <a href="https://almaepifan.ro/">Alma Epifan | Engleză 1:1</a> — engleza de care ai nevoie.
+</footer>
+
+<script>
+const VERBS=[
+  {base:"be",     past:["was","were"],  part:["been"],   pastMistakes:["beed"],          partMistakes:["being","beed"]},
+  {base:"have",   past:["had"],         part:["had"],    pastMistakes:["haved","have"],  partMistakes:["having","haved"]},
+  {base:"do",     past:["did"],         part:["done"],   pastMistakes:["doed","done"],   partMistakes:["doed","did"]},
+  {base:"say",    past:["said"],        part:["said"],   pastMistakes:["sayed","saided"],partMistakes:["sayed","saying"]},
+  {base:"go",     past:["went"],        part:["gone"],   pastMistakes:["goed","gone"],   partMistakes:["goed","went"]},
+  {base:"get",    past:["got"],         part:["got","gotten"], pastMistakes:["getted","gotten"], partMistakes:["getted","get"]},
+  {base:"make",   past:["made"],        part:["made"],   pastMistakes:["maked","maded"], partMistakes:["maked","making"]},
+  {base:"know",   past:["knew"],        part:["known"],  pastMistakes:["knowed","known"],partMistakes:["knowed","knew"]},
+  {base:"think",  past:["thought"],     part:["thought"],pastMistakes:["thinked","thoughted"],partMistakes:["thinked","thinking"]},
+  {base:"see",    past:["saw"],         part:["seen"],   pastMistakes:["seed","seen"],   partMistakes:["seed","saw"]},
+  {base:"come",   past:["came"],        part:["come"],   pastMistakes:["comed","camed"], partMistakes:["comed","came"]},
+  {base:"take",   past:["took"],        part:["taken"],  pastMistakes:["taked","taken"], partMistakes:["taked","took"]},
+  {base:"give",   past:["gave"],        part:["given"],  pastMistakes:["gived","given"], partMistakes:["gived","gave"]},
+  {base:"find",   past:["found"],       part:["found"],  pastMistakes:["finded","findid"],partMistakes:["finded","finding"]},
+  {base:"tell",   past:["told"],        part:["told"],   pastMistakes:["telled","tolded"],partMistakes:["telled","telling"]}
+];
+const SING=["I","He","She","It"], PLUR=["We","You","They"];
+
+let state={mode:"past", verb:null, pronoun:null, expected:null, score:0, attempts:0};
+
+function norm(s){return s.toLowerCase().replace(/[.,]/g,"").replace(/\s+/g," ").trim()}
+function pickVerb(){return VERBS[Math.floor(Math.random()*VERBS.length)]}
+let voicesReady=false;
+if("speechSynthesis" in window){
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged=()=>{voicesReady=true};
+}
+function pickVoice(){
+  let voices=speechSynthesis.getVoices();
+  if(!voices.length)return null;
+  return voices.find(v=>v.lang==="en-US" && /natural/i.test(v.name))
+     || voices.find(v=>v.lang==="en-US" && /online/i.test(v.name))
+     || voices.find(v=>v.lang==="en-US" && /google/i.test(v.name))
+     || voices.find(v=>v.lang==="en-US")
+     || voices.find(v=>v.lang && v.lang.startsWith("en"));
+}
+function speak(t){
+  if(!("speechSynthesis" in window)){feedback(false,"Audio is not available in this browser.");return}
+  speechSynthesis.cancel();
+  setTimeout(()=>{
+    let u=new SpeechSynthesisUtterance(t);
+    u.lang="en-US";
+    u.rate=.72;
+    let v=pickVoice();
+    if(v)u.voice=v;
+    speechSynthesis.speak(u);
+  },80);
+}
+function feedback(ok,msg){let f=document.getElementById("feedback");f.className="feedback show "+(ok?"ok":"bad");f.innerHTML=msg}
+function clearFeedback(){let f=document.getElementById("feedback");f.className="feedback";f.innerHTML=""}
+function updateScore(){score.textContent=state.score;attempts.textContent=state.attempts}
+
+function pastFor(v){
+  if(v.base==="be"){
+    let pool=SING.concat(PLUR);
+    let pr=pool[Math.floor(Math.random()*pool.length)];
+    let exp=PLUR.includes(pr)?"were":"was";
+    return {pronoun:pr, expected:exp, options:["was","were"]};
+  }
+  return {pronoun:null, expected:v.past[0], options:v.past};
+}
+
+function render(){
+ clearFeedback();
+ const p=document.getElementById("prompt"),a=document.getElementById("answer");
+ modeLabel.textContent={past:"Past Simple (2nd form)",participle:"Past Participle (3rd form)",listen:"Listen & type",choose:"Choose the form",teacher:"Teacher mode"}[state.mode];
+ check.style.display=["choose","teacher"].includes(state.mode)?"none":"inline-block";
+ reveal.style.display=state.mode==="teacher"?"none":"inline-block";
+
+ if(state.mode==="past"){
+   state.verb=pickVerb();
+   let r=pastFor(state.verb);
+   state.pronoun=r.pronoun; state.expected=r.expected; state.options=r.options;
+   let pronounHtml = state.pronoun ? `<div class="pronoun">${state.pronoun}</div>` : "";
+   p.innerHTML=`<div>${pronounHtml}<div class="big">${state.verb.base}</div></div>`;
+   a.innerHTML=`<input id="answerInput" placeholder="Write the past simple form">`;
+ }
+ if(state.mode==="participle"){
+   state.verb=pickVerb();
+   state.expected=state.verb.part[0]; state.options=state.verb.part;
+   p.innerHTML=`<div class="big">${state.verb.base}</div><p class="hint">have / has / had ___</p>`;
+   a.innerHTML=`<input id="answerInput" placeholder="Write the past participle">`;
+ }
+ if(state.mode==="listen"){
+   state.verb=pickVerb();
+   let useParticiple=Math.random()<0.5 && state.verb.part[0]!==state.verb.past[0];
+   let formToSpeak = useParticiple ? state.verb.part[0] : (state.verb.base==="be" ? "was" : state.verb.past[0]);
+   state.expected=state.verb.base; state.options=[state.verb.base];
+   p.innerHTML=`<div><button id="hear" class="listen">🔊 Hear the verb form</button><p class="hint">Listen, then type the base form (the infinitive or the first form of the verb).</p></div>`;
+   a.innerHTML=`<input id="answerInput" placeholder="Type the base form, e.g. go">`;
+   hear.onclick=()=>speak(formToSpeak);
+ }
+ if(state.mode==="choose"){
+   state.verb=pickVerb();
+   let askPast=Math.random()<0.5;
+   let pronounHtml="";
+   let correct, wrongs;
+   if(askPast){
+     if(state.verb.base==="be"){
+       let pool=SING.concat(PLUR);
+       let pr=pool[Math.floor(Math.random()*pool.length)];
+       correct = PLUR.includes(pr) ? "were" : "was";
+       let otherAgreement = correct==="was" ? "were" : "was";
+       wrongs = [otherAgreement].concat(state.verb.pastMistakes);
+       pronounHtml = `<div class="pronoun">${pr}</div>`;
+     } else {
+       correct = state.verb.past[0];
+       wrongs = state.verb.pastMistakes;
+     }
+   } else {
+     correct = state.verb.part[0];
+     wrongs = state.verb.partMistakes;
+   }
+   let opts=[correct].concat(wrongs).slice(0,3).sort(()=>Math.random()-.5);
+   p.innerHTML=`<div>${pronounHtml}<div class="big">${state.verb.base}</div></div><p class="hint">${askPast?"Past Simple (2nd form)":"Past Participle (3rd form)"}?</p>`;
+   a.innerHTML=opts.map(x=>`<button class="choice">${x}</button>`).join("");
+   document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{state.attempts++;if(b.textContent===correct){state.score++;feedback(true,"Correct!")}else feedback(false,`Correct answer: <b>${correct}</b>`);updateScore()});
+ }
+ if(state.mode==="teacher"){
+   p.innerHTML=`<div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;">All 15 verbs</div><p class="hint">Say each triplet aloud, then tap it to cross it off.</p></div>`;
+   a.innerHTML=`<div class="teacher-list">${VERBS.map((v,i)=>`<div class="teacher-item" data-idx="${i}"><b>${v.base}</b> — ${v.base==="be"?"was/were":v.past[0]} — ${v.part[0]}</div>`).join("")}</div>`;
+   document.querySelectorAll(".teacher-item").forEach(el=>el.onclick=()=>el.classList.toggle("crossed"));
+ }
+
+ let inp=document.getElementById("answerInput");if(inp){inp.focus();inp.onkeydown=e=>{if(e.key==="Enter")checkAnswer()}}
+}
+
+function checkAnswer(){
+  let inp=document.getElementById("answerInput");if(!inp)return;
+  state.attempts++;
+  let ok=state.options.map(norm).includes(norm(inp.value));
+  if(ok){state.score++;feedback(true,`Correct! <b>${state.options.join(" / ")}</b>`)}
+  else feedback(false,`The correct form is <b>${state.options.join(" / ")}</b>.`);
+  updateScore();
+}
+function revealAnswer(){
+  if(state.mode==="teacher")return;
+  feedback(true,`<b>${state.options.join(" / ")}</b>`);
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");state.mode=t.dataset.mode;render()});
+check.onclick=checkAnswer; reveal.onclick=revealAnswer; next.onclick=render;
+render();
+</script>
+<script data-goatcounter="https://almaepifan.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

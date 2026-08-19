@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30 Irregular Verbs — Alma Epifan | Engleză 1:1</title>
+<meta name="description" content="Exercițiu interactiv gratuit: completează tabelul cu 30 de verbe neregulate — infinitive, past simple, past participle.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FF7A3D'/%3E%3Cpath d='M22 26 h56 a9 9 0 0 1 9 9 v26 a9 9 0 0 1 -9 9 h-30 l-14 16 v-16 h-12 a9 9 0 0 1 -9 -9 v-26 a9 9 0 0 1 9 -9 z' fill='%23FFF4E6'/%3E%3Ccircle cx='36' cy='48' r='5' fill='%23FF7A3D'/%3E%3Ccircle cx='50' cy='48' r='5' fill='%23FFC53D'/%3E%3Ccircle cx='64' cy='48' r='5' fill='%2316324F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF;
+    --offwhite:#FFF4E6;
+    --ink:#16324F;
+    --ink-soft:#3E5C77;
+    --gray-mid:#8B9BAA;
+    --gray-faint:#D8CBBB;
+    --line:#F0E0CC;
+    --accent:#FF7A3D;
+    --accent-dark:#E8622A;
+    --sun:#FFC53D;
+    --ok:#2E7D5B;
+    --ok-bg:#E9F5EF;
+    --bad:#C1544A;
+    --bad-bg:#FBEAE8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--offwhite);
+    color: var(--ink);
+  }
+
+  header{
+    background:rgba(255,255,255,0.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10;
+  }
+  .nav{max-width:1240px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between;}
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font-family:'Fraunces', serif; font-weight:600; font-size:17px;}
+  .brand svg{flex-shrink:0;}
+  .back-link{font-size:14px; font-weight:600; color:var(--ink-soft); text-decoration:none;}
+  .back-link:hover{color:var(--accent);}
+  @media(max-width:600px){
+    .nav{flex-direction:column; align-items:flex-start; gap:10px; padding:14px 16px;}
+    .brand{font-size:15px;}
+    .brand svg{width:22px; height:22px;}
+    .back-link{font-size:13.5px;}
+  }
+
+  .page{padding: 32px 20px 60px;}
+
+  .sheet {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 40px 44px 44px 44px;
+    box-shadow: 0 20px 40px -28px rgba(22,50,79,0.18);
+    border: 1px solid var(--line);
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 4px solid var(--ink);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .header-text h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .header-text p {
+    margin-top: 8px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .badge {
+    background: var(--offwhite);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    white-space: nowrap;
+  }
+
+  .instructions {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+
+  button {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 9px;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.06s ease, opacity 0.15s ease;
+  }
+
+  button:active { transform: scale(0.97); }
+
+  .btn-check {
+    background: var(--accent);
+    color: #ffffff;
+  }
+  .btn-check:hover { background: var(--accent-dark); }
+
+  .btn-key {
+    background: var(--offwhite);
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+  }
+  .btn-key:hover { border-color: var(--accent); }
+
+  .btn-reset {
+    background: var(--white);
+    color: var(--ink-soft);
+    border: 1.5px solid var(--line);
+  }
+  .btn-reset:hover { border-color: var(--gray-mid); }
+
+  .score {
+    margin-left: auto;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--offwhite);
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 9px 18px;
+  }
+
+  .tables {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  table {
+    flex: 1;
+    min-width: 320px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: var(--ink);
+    padding: 10px 12px;
+  }
+
+  thead th:first-child { border-radius: 8px 0 0 0; width: 30px; text-align: center; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody tr:nth-child(even) { background: var(--offwhite); }
+  tbody tr:nth-child(odd) { background: var(--white); }
+
+  tbody td {
+    padding: 9px 12px;
+    font-size: 14.5px;
+    line-height: 1.4;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--line);
+  }
+
+  tbody td:first-child {
+    text-align: center;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12.5px;
+  }
+
+  .answer-input {
+    width: 100%;
+    max-width: 130px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14.5px;
+    padding: 7px 9px;
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    background: var(--white);
+    color: var(--ink);
+    outline: none;
+  }
+
+  .answer-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 122, 61, 0.16);
+  }
+
+  .answer-input.correct {
+    background: var(--ok-bg);
+    border-color: var(--ok);
+    color: var(--ok);
+    font-weight: 700;
+  }
+
+  .answer-input.incorrect {
+    background: var(--bad-bg);
+    border-color: var(--bad);
+    color: var(--bad);
+    font-weight: 700;
+  }
+
+  .answer-input.revealed {
+    background: #FFEDE0;
+    border-color: var(--accent);
+    color: var(--accent-dark);
+    font-weight: 800;
+  }
+
+  .footer-row {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--gray-mid);
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+  .footer-row a{color:var(--ink-soft); font-weight:600; text-decoration:none;}
+
+  footer.site-footer{text-align:center; padding:32px 20px; color:var(--gray-mid); font-size:13.5px;}
+  footer.site-footer a{color:var(--ink-soft); font-weight:600; text-decoration:none;}
+
+  @media (max-width: 760px) {
+    .sheet { padding: 26px 20px 30px 20px; }
+    .tables { flex-direction: column; }
+    .score { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="https://almaepifan.ro/" class="brand">
+      <svg width="26" height="26" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="22" fill="#FF7A3D"/><path d="M22 26 h56 a9 9 0 0 1 9 9 v26 a9 9 0 0 1 -9 9 h-30 l-14 16 v-16 h-12 a9 9 0 0 1 -9 -9 v-26 a9 9 0 0 1 9 -9 z" fill="#FFF4E6"/><circle cx="36" cy="48" r="5" fill="#FF7A3D"/><circle cx="50" cy="48" r="5" fill="#FFC53D"/><circle cx="64" cy="48" r="5" fill="#16324F"/></svg>
+      Alma Epifan | Engleză 1:1
+    </a>
+    <a href="https://almaepifan.ro/resurse.html" class="back-link">← Înapoi la resurse</a>
+  </div>
+</header>
+
+<div class="page">
+  <div class="sheet">
+    <div class="header-row">
+      <div class="header-text">
+        <h1>Irregular Verbs</h1>
+        <p>30 common irregular verbs &middot; infinitive &middot; past simple &middot; past participle</p>
+      </div>
+      <div class="badge">Interactive worksheet</div>
+    </div>
+
+    <div class="instructions">
+      Fill in the missing form for each verb. Click <strong>Check Answers</strong> to see your score, or
+      <strong>Show Answer Key</strong> if you get stuck.
+    </div>
+
+    <div class="controls">
+      <button class="btn-check" onclick="checkAnswers()">Check Answers</button>
+      <button class="btn-key" onclick="showKey()">Show Answer Key</button>
+      <button class="btn-reset" onclick="resetAll()">Reset</button>
+      <div class="score" id="score">Score: — / 30</div>
+    </div>
+
+    <div class="tables">
+      <table>
+        <thead><tr><th>#</th><th>Infinitive</th><th>Past Simple</th><th>Past Participle</th></tr></thead>
+        <tbody id="table-left"></tbody>
+      </table>
+      <table>
+        <thead><tr><th>#</th><th>Infinitive</th><th>Past Simple</th><th>Past Participle</th></tr></thead>
+        <tbody id="table-right"></tbody>
+      </table>
+    </div>
+
+    <div class="footer-row">
+      <span>Alma Epifan | Engleză 1:1</span>
+      <span>Irregular verbs &middot; A1&ndash;B1</span>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  Un exercițiu gratuit de la <a href="https://almaepifan.ro/">Alma Epifan | Engleză 1:1</a> — engleza de care ai nevoie.
+</footer>
+
+<script>
+  // [infinitive, past simple, past participle, blankColumn ('inf'|'past'|'pp'), acceptedAnswers[]]
+  const verbs = [
+    ['be', 'was / were', 'been', 'past', ['was', 'were', 'was/were', 'was / were']],
+    ['begin', 'began', 'begun', 'pp', ['begun']],
+    ['break', 'broke', 'broken', 'inf', ['break']],
+    ['bring', 'brought', 'brought', 'past', ['brought']],
+    ['build', 'built', 'built', 'pp', ['built']],
+    ['buy', 'bought', 'bought', 'inf', ['buy']],
+    ['catch', 'caught', 'caught', 'past', ['caught']],
+    ['choose', 'chose', 'chosen', 'pp', ['chosen']],
+    ['come', 'came', 'come', 'inf', ['come']],
+    ['do', 'did', 'done', 'past', ['did']],
+    ['drink', 'drank', 'drunk', 'pp', ['drunk']],
+    ['drive', 'drove', 'driven', 'inf', ['drive']],
+    ['eat', 'ate', 'eaten', 'past', ['ate']],
+    ['fall', 'fell', 'fallen', 'pp', ['fallen']],
+    ['feel', 'felt', 'felt', 'inf', ['feel']],
+    ['find', 'found', 'found', 'past', ['found']],
+    ['get', 'got', 'gotten', 'pp', ['gotten', 'got']],
+    ['give', 'gave', 'given', 'inf', ['give']],
+    ['go', 'went', 'gone', 'past', ['went']],
+    ['have', 'had', 'had', 'pp', ['had']],
+    ['know', 'knew', 'known', 'inf', ['know']],
+    ['leave', 'left', 'left', 'past', ['left']],
+    ['make', 'made', 'made', 'pp', ['made']],
+    ['meet', 'met', 'met', 'inf', ['meet']],
+    ['pay', 'paid', 'paid', 'past', ['paid']],
+    ['run', 'ran', 'run', 'pp', ['run']],
+    ['say', 'said', 'said', 'inf', ['say']],
+    ['see', 'saw', 'seen', 'past', ['saw']],
+    ['take', 'took', 'taken', 'pp', ['taken']],
+    ['write', 'wrote', 'written', 'inf', ['write']],
+  ];
+
+  const colLabel = { inf: 0, past: 1, pp: 2 };
+
+  function makeCell(value, isBlank, idx) {
+    if (!isBlank) return `<td>${value}</td>`;
+    return `<td><input type="text" class="answer-input" id="blank-${idx}" autocomplete="off" spellcheck="false"></td>`;
+  }
+
+  function renderTable(list, startIndex, tbodyId) {
+    const tbody = document.getElementById(tbodyId);
+    tbody.innerHTML = list.map((v, i) => {
+      const idx = startIndex + i;
+      const [inf, past, pp, blankCol] = v;
+      const cells = [inf, past, pp].map((val, colIdx) => {
+        const isBlank = colLabel[blankCol] === colIdx;
+        return makeCell(val, isBlank, idx);
+      }).join('');
+      return `<tr><td>${idx + 1}</td>${cells}</tr>`;
+    }).join('');
+  }
+
+  renderTable(verbs.slice(0, 15), 0, 'table-left');
+  renderTable(verbs.slice(15, 30), 15, 'table-right');
+
+  function normalize(s) {
+    return s.trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function checkAnswers() {
+    let correct = 0;
+    let attempted = 0;
+    verbs.forEach((v, idx) => {
+      const input = document.getElementById(`blank-${idx}`);
+      if (!input) return;
+      const val = normalize(input.value);
+      input.classList.remove('revealed');
+      if (val === '') {
+        input.classList.remove('correct', 'incorrect');
+        return;
+      }
+      attempted++;
+      const accepted = v[4].map(normalize);
+      if (accepted.includes(val)) {
+        input.classList.add('correct');
+        input.classList.remove('incorrect');
+        correct++;
+      } else {
+        input.classList.add('incorrect');
+        input.classList.remove('correct');
+      }
+    });
+    document.getElementById('score').textContent = `Score: ${correct} / ${verbs.length}`;
+  }
+
+  function showKey() {
+    verbs.forEach((v, idx) => {
+      const input = document.getElementById(`blank-${idx}`);
+      if (!input) return;
+      input.value = v[4][0];
+      input.classList.remove('correct', 'incorrect');
+      input.classList.add('revealed');
+    });
+    document.getElementById('score').textContent = `Score: — / ${verbs.length} (key shown)`;
+  }
+
+  function resetAll() {
+    verbs.forEach((v, idx) => {
+      const input = document.getElementById(`blank-${idx}`);
+      if (!input) return;
+      input.value = '';
+      input.classList.remove('correct', 'incorrect', 'revealed');
+    });
+    document.getElementById('score').textContent = `Score: — / ${verbs.length}`;
+  }
+</script>
+<script data-goatcounter="https://almaepifan.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

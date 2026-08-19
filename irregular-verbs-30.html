@@ -414,7 +414,9 @@
     verbs.forEach((v, idx) => {
       const input = document.getElementById(`blank-${idx}`);
       if (!input) return;
-      input.value = v[4][0];
+      const blankCol = v[3];
+      const displayValue = v[colLabel[blankCol]];
+      input.value = displayValue;
       input.classList.remove('correct', 'incorrect');
       input.classList.add('revealed');
     });
